@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PropsWithChildren } from "react";
+import type { Facility, Room } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import { demoFixtures } from "../../fixtures/demoFixtures.ts";
 import type { SchedulingRepositories } from "../../domain/repositories.ts";
@@ -28,7 +29,6 @@ export default function DemoStateProvider({
     () => repositories ?? createSchedulingRepositories(),
     [repositories],
   );
-
   const updateData = useCallback(
     async (operation: () => Promise<DemoFixtures>) => {
       setIsLoading(true);
@@ -48,7 +48,6 @@ export default function DemoStateProvider({
     },
     [],
   );
-
   const reload = useCallback(
     async () =>
       updateData(async () => {
@@ -59,7 +58,6 @@ export default function DemoStateProvider({
       }),
     [activeRepositories, updateData],
   );
-
   const resetToSeed = useCallback(
     async () =>
       updateData(() => resetLocalDataToSeed(activeRepositories, demoFixtures)),
@@ -74,12 +72,31 @@ export default function DemoStateProvider({
     async () => updateData(() => clearLocalData(activeRepositories)),
     [activeRepositories, updateData],
   );
+  const saveFacility = useCallback(
+    async (facility: Facility) =>
+      updateData(async () => {
+        await activeRepositories.facilities.put(facility);
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
+  const saveRoom = useCallback(
+    async (room: Room) =>
+      updateData(async () => {
+        if (
+          (await activeRepositories.facilities.get(room.facilityId)) ===
+          undefined
+        )
+          throw new Error("A room must belong to an existing facility.");
+        await activeRepositories.rooms.put(room);
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
   const exportData = useCallback(() => exportLocalData(data), [data]);
-
   useEffect(() => {
     void Promise.resolve().then(reload);
   }, [reload]);
-
   const value = useMemo(
     () => ({
       data,
@@ -89,6 +106,8 @@ export default function DemoStateProvider({
       resetToSeed,
       importData,
       clearData,
+      saveFacility,
+      saveRoom,
       exportData,
     }),
     [
@@ -100,9 +119,10 @@ export default function DemoStateProvider({
       isLoading,
       reload,
       resetToSeed,
+      saveFacility,
+      saveRoom,
     ],
   );
-
   return (
     <DemoStateContext.Provider value={value}>
       {children}

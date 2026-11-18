@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import type { Facility, Room } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 
 export interface DemoState {
@@ -9,6 +10,8 @@ export interface DemoState {
   resetToSeed: () => Promise<void>;
   importData: (serializedData: string) => Promise<void>;
   clearData: () => Promise<void>;
+  saveFacility: (facility: Facility) => Promise<void>;
+  saveRoom: (room: Room) => Promise<void>;
   exportData: () => string;
 }
 

@@ -15,6 +15,8 @@ test("requires confirmation before clearing local data and states the simulation
         resetToSeed: vi.fn().mockResolvedValue(undefined),
         importData: vi.fn().mockResolvedValue(undefined),
         clearData,
+        saveFacility: vi.fn().mockResolvedValue(undefined),
+        saveRoom: vi.fn().mockResolvedValue(undefined),
         exportData: vi.fn().mockReturnValue("{}"),
       }}
     >
