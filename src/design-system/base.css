@@ -1,0 +1,35 @@
+/* Page defaults from BuildX, built on the design tokens. The fallback fonts are not design tokens. */
+body {
+  margin: 0;
+  background-color: var(--semantic-color-background-default-primary);
+  color: var(--semantic-color-text-default-primary);
+  font-family:
+    var(--primitives-type-font-family-primary),
+    var(--primitives-type-font-family-secondary), system-ui, sans-serif;
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+h1 {
+  font-size: var(--primitives-type-font-size-heading-1);
+  line-height: var(--primitives-type-line-height-heading-1);
+}
+h2 {
+  font-size: var(--primitives-type-font-size-heading-2);
+  line-height: var(--primitives-type-line-height-heading-2);
+}
+h3 {
+  font-size: var(--primitives-type-font-size-heading-3);
+  line-height: var(--primitives-type-line-height-heading-3);
+}
+h4 {
+  font-size: var(--primitives-type-font-size-heading-4);
+  line-height: var(--primitives-type-line-height-heading-4);
+}
+h5 {
+  font-size: var(--primitives-type-font-size-heading-5);
+  line-height: var(--primitives-type-line-height-heading-5);
+}
+h6 {
+  font-size: var(--primitives-type-font-size-heading-6);
+  line-height: var(--primitives-type-line-height-heading-6);
+}

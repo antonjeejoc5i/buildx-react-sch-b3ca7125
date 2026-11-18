@@ -1,0 +1,25 @@
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    container: "node:24-bookworm"
+    defaults:
+      run:
+        working-directory: "."
+    steps:
+      - uses: actions/checkout@v5
+      - name: "install"
+        run: "npm ci"
+      - name: "format check"
+        run: "npx --yes prettier@3 --check --ignore-unknown . '!**/package-lock.json' '!.github/**'"
+      - name: "typecheck"
+        run: "npx tsc -b"
+      - name: "lint"
+        run: "npm run lint"
+      - name: "build"
+        run: "npm run build"
+      - name: "test"
+        run: "npx vitest run"
