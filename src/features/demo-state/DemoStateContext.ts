@@ -6,6 +6,10 @@ export interface DemoState {
   error: Error | null;
   isLoading: boolean;
   reload: () => Promise<void>;
+  resetToSeed: () => Promise<void>;
+  importData: (serializedData: string) => Promise<void>;
+  clearData: () => Promise<void>;
+  exportData: () => string;
 }
 
 export const DemoStateContext = createContext<DemoState | null>(null);
