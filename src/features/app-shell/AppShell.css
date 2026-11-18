@@ -1,0 +1,140 @@
+.app-shell {
+  min-height: 100vh;
+  background-color: var(--semantic-color-background-default-secondary);
+}
+
+.app-shell__header {
+  align-items: center;
+  background-color: var(--component-nav-sidebar-bg);
+  display: flex;
+  gap: var(--primitives-spacing-4);
+  justify-content: space-between;
+  padding: var(--primitives-spacing-4) var(--primitives-spacing-6);
+}
+
+.app-shell__brand {
+  color: var(--component-nav-item-text);
+  font-size: var(--primitives-type-font-size-title-medium);
+  line-height: var(--primitives-type-line-height-title-medium);
+  text-decoration: none;
+}
+
+.app-shell__actor-label {
+  color: var(--component-nav-item-text);
+  display: grid;
+  font-size: var(--primitives-type-font-size-body-small);
+  gap: var(--primitives-spacing-1);
+  line-height: var(--primitives-type-line-height-body-small);
+}
+
+.app-shell select {
+  background-color: var(--component-dropdown-background-default);
+  border: 1px solid var(--component-dropdown-border-default);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-dropdown-option-text-default);
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  padding: var(--primitives-spacing-1) var(--primitives-spacing-2);
+}
+
+.app-shell__body {
+  display: grid;
+  grid-template-columns:
+    minmax(var(--primitives-spacing-40), var(--primitives-spacing-48))
+    1fr;
+}
+
+.app-shell__navigation {
+  background-color: var(--component-nav-sidebar-bg);
+  min-height: 100vh;
+  padding: var(--primitives-spacing-6);
+}
+
+.app-shell__navigation ul {
+  list-style: none;
+  margin: var(--primitives-spacing-4) 0 0;
+  padding: 0;
+}
+
+.app-shell__navigation li + li {
+  margin-top: var(--primitives-spacing-2);
+}
+
+.app-shell__navigation a {
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-nav-item-text);
+  display: block;
+  padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
+  text-decoration: none;
+}
+
+.app-shell__navigation a:hover,
+.app-shell__navigation a[aria-current="page"] {
+  background-color: var(--component-nav-item-active-bg);
+  color: var(--component-nav-item-active-text);
+}
+
+.app-shell__actor-summary {
+  color: var(--component-nav-item-text);
+  font-size: var(--primitives-type-font-size-body-small);
+  line-height: var(--primitives-type-line-height-body-small);
+  margin: 0;
+}
+
+.app-shell__content {
+  padding: var(--primitives-spacing-6);
+}
+
+.app-shell__loading,
+.app-shell__denial,
+.app-shell__detail {
+  background-color: var(--component-surface-card-bg);
+  border: 1px solid var(--component-surface-card-border);
+  border-radius: var(--primitives-radius-lg);
+  margin: 0 auto;
+  max-width: var(--primitives-spacing-64);
+  padding: var(--primitives-spacing-6);
+}
+
+.app-shell__denial {
+  border-color: var(--semantic-color-status-error);
+}
+
+.app-shell__denial h1,
+.app-shell__detail h1 {
+  margin: 0;
+}
+
+.app-shell__denial p,
+.app-shell__detail p,
+.app-shell__detail span {
+  color: var(--semantic-color-text-default-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+
+.app-shell__denial a {
+  color: var(--semantic-color-text-brand-primary);
+}
+
+@media (max-width: 700px) {
+  .app-shell__header,
+  .app-shell__body {
+    display: block;
+  }
+
+  .app-shell__header,
+  .app-shell__navigation,
+  .app-shell__content {
+    padding: var(--primitives-spacing-4);
+  }
+
+  .app-shell__actor-label {
+    margin-top: var(--primitives-spacing-3);
+  }
+
+  .app-shell__navigation {
+    min-height: auto;
+  }
+}
