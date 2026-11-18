@@ -1,0 +1,89 @@
+.facility-management {
+  display: grid;
+  gap: var(--primitives-spacing-6);
+  margin: 0 auto;
+  max-width: var(--primitives-spacing-64);
+}
+.facility-management header p,
+.facility-management header h1,
+.facility-management__card h2,
+.facility-management__card p {
+  margin: 0;
+}
+.facility-management header p,
+.facility-management__help {
+  color: var(--semantic-color-text-default-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+.facility-management__card {
+  background-color: var(--component-surface-card-bg);
+  border: 1px solid var(--component-surface-card-border);
+  border-radius: var(--primitives-radius-lg);
+  display: grid;
+  gap: var(--primitives-spacing-4);
+  padding: var(--primitives-spacing-6);
+}
+.facility-management__card h2 {
+  font-size: var(--primitives-type-font-size-title-medium);
+  line-height: var(--primitives-type-line-height-title-medium);
+}
+.facility-management label,
+.facility-management fieldset {
+  color: var(--component-input-label);
+  display: grid;
+  font-size: var(--primitives-type-font-size-body-medium);
+  gap: var(--primitives-spacing-1);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+.facility-management input,
+.facility-management textarea {
+  background-color: var(--component-input-background-default);
+  border: 1px solid var(--component-input-border-default);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-input-text-value);
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  padding: var(--primitives-spacing-2);
+}
+.facility-management textarea {
+  min-height: var(--primitives-spacing-16);
+  resize: vertical;
+}
+.facility-management fieldset {
+  border: 1px solid var(--component-input-border-default);
+  border-radius: var(--primitives-radius-sm);
+  padding: var(--primitives-spacing-3);
+}
+.facility-management fieldset label {
+  align-items: center;
+  display: flex;
+  gap: var(--primitives-spacing-2);
+}
+.facility-management button {
+  background-color: var(--component-button-primary-default-background);
+  border: 1px solid var(--component-button-primary-default-background);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-button-primary-default-text);
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
+  width: fit-content;
+}
+.facility-management__room {
+  border: 1px solid var(--component-input-divider);
+  border-radius: var(--primitives-radius-md);
+  display: grid;
+  gap: var(--primitives-spacing-3);
+  padding: var(--primitives-spacing-4);
+}
+.facility-management__message {
+  background-color: var(--semantic-color-status-status-light-info);
+  border: 1px solid var(--semantic-color-status-info);
+  border-radius: var(--primitives-radius-md);
+  color: var(--semantic-color-text-default-primary);
+  margin: 0;
+  padding: var(--primitives-spacing-3);
+}

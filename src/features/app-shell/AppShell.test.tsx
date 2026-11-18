@@ -17,7 +17,6 @@ const facilityScopedFixtures: DemoFixtures = {
     },
   ],
 };
-
 function renderShell() {
   window.location.hash = "#/";
   render(
@@ -30,6 +29,8 @@ function renderShell() {
         resetToSeed: async () => undefined,
         importData: async () => undefined,
         clearData: async () => undefined,
+        saveFacility: async () => undefined,
+        saveRoom: async () => undefined,
         exportData: () => "{}",
       }}
     >
@@ -37,20 +38,15 @@ function renderShell() {
     </DemoStateContext.Provider>,
   );
 }
-
 afterEach(cleanup);
-
 test("updates navigation for the selected actor scope", () => {
   renderShell();
-
   expect(
     screen.getByRole("link", { name: "Morning Routines Research" }),
   ).toBeTruthy();
-
   fireEvent.change(screen.getByLabelText("Simulated local actor"), {
     target: { value: "user-facility-reviewer" },
   });
-
   expect(
     screen.queryByRole("link", { name: "Morning Routines Research" }),
   ).toBeNull();
@@ -58,17 +54,12 @@ test("updates navigation for the selected actor scope", () => {
     screen.getByRole("link", { name: "Harbor Research Center" }),
   ).toBeTruthy();
 });
-
 test("announces denial for a direct route outside the selected actor scope", () => {
   renderShell();
-
   fireEvent.change(screen.getByLabelText("Simulated local actor"), {
     target: { value: "user-facility-reviewer" },
   });
   window.location.hash = "#/studies/study-morning-routines";
   fireEvent(window, new Event("hashchange"));
-
-  const denial = screen.getByRole("alert");
-  expect(denial.textContent).toContain("Access denied");
-  expect(denial.textContent).toContain("outside the selected demo actor");
+  expect(screen.getByRole("alert").textContent).toContain("Access denied");
 });

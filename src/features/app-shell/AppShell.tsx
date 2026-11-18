@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
+import { useDemoState } from "../demo-state/useDemoState.ts";
+import FacilityManagement from "../facility-management/FacilityManagement.tsx";
 import LocalDataControls from "../local-data/LocalDataControls.tsx";
 import WelcomeScreen from "../welcome/WelcomeScreen.tsx";
-import { useDemoState } from "../demo-state/useDemoState.ts";
 import ActorProvider from "./ActorProvider.tsx";
 import {
   getActorLabel,
@@ -32,22 +33,24 @@ function DeniedRoute() {
 }
 
 function RouteContent({ data, route }: { data: DemoFixtures; route: Route }) {
+  const { saveFacility, saveRoom } = useDemoState();
   if (route.kind === "overview") return <WelcomeScreen />;
   if (route.kind === "localData") return <LocalDataControls />;
-
   if (route.kind === "facility") {
     const facility = data.facilities.find(
       (item) => item.id === route.facilityId,
     );
+    if (facility === undefined) return <DeniedRoute />;
     return (
-      <section aria-labelledby="facility-heading" className="app-shell__detail">
-        <p>Facility</p>
-        <h1 id="facility-heading">{facility?.name ?? "Unknown facility"}</h1>
-        <span>{facility?.timeZone}</span>
-      </section>
+      <FacilityManagement
+        demoUsers={data.demoUsers}
+        facility={facility}
+        rooms={data.rooms.filter((room) => room.facilityId === facility.id)}
+        saveFacility={saveFacility}
+        saveRoom={saveRoom}
+      />
     );
   }
-
   if (route.kind === "study") {
     const study = data.studies.find((item) => item.id === route.studyId);
     return (
@@ -58,7 +61,6 @@ function RouteContent({ data, route }: { data: DemoFixtures; route: Route }) {
       </section>
     );
   }
-
   return <DeniedRoute />;
 }
 
@@ -66,30 +68,23 @@ function ScopedContent() {
   const { data, error, isLoading } = useDemoState();
   const { actor, selectActor } = useCurrentActor();
   const [hash, setHash] = useState(() => window.location.hash);
-
   useEffect(() => {
     const updateHash = () => setHash(window.location.hash);
     window.addEventListener("hashchange", updateHash);
     return () => window.removeEventListener("hashchange", updateHash);
   }, []);
-
-  if (isLoading || data === null || actor === null) {
+  if (isLoading || data === null || actor === null)
     return <main className="app-shell__loading">Loading local demo data…</main>;
-  }
-
-  if (error !== null) {
+  if (error !== null)
     return (
       <main className="app-shell__denial" role="alert">
         <h1>Local data is unavailable</h1>
         <p>{error.message}</p>
       </main>
     );
-  }
-
   const route = getRoute(hash);
   const navigationItems = getNavigationItems(data, actor);
   const activeHref = `#${hash.replace(/^#/, "") || "/"}`;
-
   return (
     <div className="app-shell">
       <header className="app-shell__header">
