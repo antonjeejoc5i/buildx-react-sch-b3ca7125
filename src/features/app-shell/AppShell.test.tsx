@@ -17,6 +17,7 @@ const facilityScopedFixtures: DemoFixtures = {
     },
   ],
 };
+
 function renderShell() {
   window.location.hash = "#/";
   render(
@@ -32,6 +33,7 @@ function renderShell() {
         saveFacility: async () => undefined,
         saveRoom: async () => undefined,
         saveStudy: async () => undefined,
+        saveQuota: async () => undefined,
         exportData: () => "{}",
       }}
     >
@@ -39,7 +41,9 @@ function renderShell() {
     </DemoStateContext.Provider>,
   );
 }
+
 afterEach(cleanup);
+
 test("updates navigation for the selected actor scope", () => {
   renderShell();
   expect(
@@ -55,6 +59,7 @@ test("updates navigation for the selected actor scope", () => {
     screen.getByRole("link", { name: "Harbor Research Center" }),
   ).toBeTruthy();
 });
+
 test("announces denial for a direct route outside the selected actor scope", () => {
   renderShell();
   fireEvent.change(screen.getByLabelText("Simulated local actor"), {

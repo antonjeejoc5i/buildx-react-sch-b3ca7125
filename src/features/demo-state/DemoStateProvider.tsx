@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PropsWithChildren } from "react";
-import type { Facility, Room, Study } from "../../domain/models.ts";
+import type { Facility, Quota, Room, Study } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import { demoFixtures } from "../../fixtures/demoFixtures.ts";
 import type { SchedulingRepositories } from "../../domain/repositories.ts";
@@ -102,10 +102,20 @@ export default function DemoStateProvider({
       }),
     [activeRepositories, updateData],
   );
+  const saveQuota = useCallback(
+    async (quota: Quota) =>
+      updateData(async () => {
+        await activeRepositories.quotas.put(quota);
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
   const exportData = useCallback(() => exportLocalData(data), [data]);
+
   useEffect(() => {
     void Promise.resolve().then(reload);
   }, [reload]);
+
   const value = useMemo(
     () => ({
       data,
@@ -118,6 +128,7 @@ export default function DemoStateProvider({
       saveFacility,
       saveRoom,
       saveStudy,
+      saveQuota,
       exportData,
     }),
     [
@@ -130,10 +141,12 @@ export default function DemoStateProvider({
       reload,
       resetToSeed,
       saveFacility,
+      saveQuota,
       saveRoom,
       saveStudy,
     ],
   );
+
   return (
     <DemoStateContext.Provider value={value}>
       {children}

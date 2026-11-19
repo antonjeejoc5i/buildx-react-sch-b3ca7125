@@ -18,6 +18,7 @@ test("requires confirmation before clearing local data and states the simulation
         saveFacility: vi.fn().mockResolvedValue(undefined),
         saveRoom: vi.fn().mockResolvedValue(undefined),
         saveStudy: vi.fn().mockResolvedValue(undefined),
+        saveQuota: vi.fn().mockResolvedValue(undefined),
         exportData: vi.fn().mockReturnValue("{}"),
       }}
     >
