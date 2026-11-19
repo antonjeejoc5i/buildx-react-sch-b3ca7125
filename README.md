@@ -6,7 +6,6 @@ Phase 1 is a frontend-only React + TypeScript MVP for a Panelist Scheduling Tool
 
 - [About](#about)
 - [Features](#features)
-- [Not finished yet](#not-finished-yet)
 - [Tech stack](#tech-stack)
 - [Project structure](#project-structure)
 - [Prerequisites](#prerequisites)
@@ -123,12 +122,9 @@ Qualified participants already exist in Kinesis / Panel Management and complete 
 - **Add automated unit and UI coverage.** Expand Vitest coverage across local domain rules, persistence, role views, error states, and key feature workflows.
   - Tests cover eligibility, quotas, overbooking, intervals, daylight saving, persistence, roles, empty/error states, schedules, waitlists, language, accessibility, and local-data workflows.
   - Lint, typecheck, build, and test commands pass without network services or real personal data.
-
-## Not finished yet
-
-These planned stories did not pass BuildX's checks, so they are not in the code:
-
-- Run end-to-end local scheduling journeys
+- **Run end-to-end local scheduling journeys.** Create end-to-end tests through the real React UI, IndexedDB data, and simulated local workflows.
+  - Tests complete qualified handoff, booking, multi-visit review, confirmation, page reload persistence, and rejection of unavailable or ineligible booking attempts.
+  - Tests cover researcher audited changes, notification records, reception check-in, scoped reporting, and local-data disclosure without a backend or live delivery.
 
 ## Tech stack
 
@@ -141,6 +137,7 @@ These planned stories did not pass BuildX's checks, so they are not in the code:
 .github/ (1 file)
   workflows/ (1 file)
 docs/ (1 file)
+e2e/ (1 file)
 public/ (1 file)
 src/ (137 files)
   design-system/ (3 files)
@@ -199,7 +196,7 @@ Use its variables for colours, fonts, font sizes, spacing and corners. Do not wr
 - `index.html`: Provides browser metadata for the static scheduling demo.
 - `package.json`: Scaffold json file
 - `package-lock.json`: Scaffold json file
-- `src/App.tsx`: Wires the local notification outbox into the browser-only demonstration.
+- `src/App.tsx`: Scaffold tsx file
 - `src/domain/models.ts`: Defines scheduling domain models, including consecutive-visit interval rules for multi-visit studies.
 - `src/domain/repositories.ts`: Scaffold ts file
 - `src/features/appointment-management/AppointmentManagement.css`: Scaffold css file
@@ -208,7 +205,7 @@ Use its variables for colours, fonts, font sizes, spacing and corners. Do not wr
 - `src/features/app-shell/ActorContext.ts`: Defines the current simulated actor context.
 - `src/features/app-shell/ActorProvider.tsx`: Provides local selection and lookup of the simulated actor.
 - `src/features/app-shell/AppShell.css`: Styles the responsive application shell using design-system tokens.
-- `src/features/app-shell/AppShell.tsx`: Wires bulk booking operations into authorized study detail routes.
+- `src/features/app-shell/AppShell.tsx`: Scaffold tsx file
 - `src/features/app-shell/routes.ts`: Adds the authorised reports and appointments route to application navigation.
 - `src/features/app-shell/useCurrentActor.ts`: Exposes the selected simulated actor to application features.
 - `src/features/booking-confirmation/BookingConfirmation.css`: Styles the confirmation content using design-system tokens.
@@ -217,8 +214,8 @@ Use its variables for colours, fonts, font sizes, spacing and corners. Do not wr
 - `src/features/booking-confirmation/ConfirmationTemplateEditor.css`: Styles the editable confirmation-template controls with design-system tokens.
 - `src/features/booking-confirmation/ConfirmationTemplateEditor.tsx`: Provides the study-scoped editor for confirmation template content and management-link settings.
 - `src/features/booking-flow/BookingFlow.css`: Styles the booking flow using design-system tokens.
-- `src/features/booking-flow/bookingFlowData.ts`: Evaluates participant booking eligibility, capacity, quota, and visit interval rules.
-- `src/features/booking-flow/BookingFlow.tsx`: Renders accessible, explicitly named available-slot controls in the participant booking flow.
+- `src/features/booking-flow/bookingFlowData.ts`: Scaffold ts file
+- `src/features/booking-flow/BookingFlow.tsx`: Scaffold tsx file
 - `src/features/bulk-booking-operations/BulkBookingOperations.css`: Styles the bulk booking operations controls with design-system tokens.
 - `src/features/bulk-booking-operations/bulkBookingOperationsData.ts`: Builds scoped bulk booking previews, conflict checks, changes, notifications, and linked audit events.
 - `src/features/bulk-booking-operations/BulkBookingOperations.tsx`: Renders scoped bulk booking selection, previews, conflict resolution controls, and explicit confirmation.
@@ -255,6 +252,8 @@ Use its variables for colours, fonts, font sizes, spacing and corners. Do not wr
 ## Testing
 
 - Frontend: `npx vitest run`, using Vitest with React Testing Library
+
+The user journeys in `e2e/` run against the whole app in a real browser. BuildX runs them on the merged code before each review.
 
 CI in `.github/workflows/ci.yml` checks formatting, lint, types, tests and the production build on every push and pull request.
 
