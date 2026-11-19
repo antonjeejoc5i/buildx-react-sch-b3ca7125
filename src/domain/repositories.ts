@@ -22,6 +22,7 @@ export interface Repository<T extends IdentifiedRecord> {
   get(id: string): Promise<T | undefined>;
   getAll(): Promise<T[]>;
   put(record: T): Promise<void>;
+  delete(id: string): Promise<void>;
   clear(): Promise<void>;
 }
 
