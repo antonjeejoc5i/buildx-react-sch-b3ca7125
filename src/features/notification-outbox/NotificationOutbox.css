@@ -1,0 +1,84 @@
+.notification-outbox {
+  border: 1px solid var(--component-surface-card-border);
+  border-radius: var(--primitives-radius-md);
+  display: grid;
+  gap: var(--primitives-spacing-4);
+  margin: var(--primitives-spacing-6);
+  padding: var(--primitives-spacing-5);
+}
+
+.notification-outbox__heading,
+.notification-outbox li {
+  align-items: start;
+  display: flex;
+  gap: var(--primitives-spacing-4);
+  justify-content: space-between;
+}
+
+.notification-outbox h2,
+.notification-outbox p {
+  margin: 0;
+}
+
+.notification-outbox h2 {
+  font-size: var(--primitives-type-font-size-title-medium);
+  line-height: var(--primitives-type-line-height-title-medium);
+}
+
+.notification-outbox p {
+  color: var(--semantic-color-text-default-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+
+.notification-outbox ul {
+  display: grid;
+  gap: var(--primitives-spacing-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notification-outbox li {
+  border: 1px solid var(--component-table-row-border);
+  border-radius: var(--primitives-radius-sm);
+  padding: var(--primitives-spacing-4);
+}
+
+.notification-outbox li > div:last-child {
+  display: grid;
+  gap: var(--primitives-spacing-2);
+  justify-items: end;
+}
+
+.notification-outbox button {
+  background: var(--component-button-secondary-default-background);
+  border: 1px solid var(--component-button-secondary-default-border);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-button-secondary-default-text);
+  font-size: var(--primitives-type-font-size-body-small);
+  line-height: var(--primitives-type-line-height-body-small);
+  padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
+}
+
+.notification-outbox__status {
+  border-radius: var(--primitives-radius-sm);
+  font-size: var(--primitives-type-font-size-caption);
+  line-height: var(--primitives-type-line-height-caption);
+  padding: var(--primitives-spacing-1) var(--primitives-spacing-2);
+}
+
+.notification-outbox__status--pending {
+  background: var(--component-badges-brand-background);
+  color: var(--component-badges-brand-text);
+}
+
+.notification-outbox__status--sent {
+  background: var(--component-badges-success-background);
+  color: var(--component-badges-success-text);
+}
+
+.notification-outbox__status--failed {
+  background: var(--component-badges-error-background);
+  color: var(--component-badges-error-text);
+}
