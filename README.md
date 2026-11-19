@@ -105,6 +105,9 @@ Qualified participants already exist in Kinesis / Panel Management and complete 
 - **Build researcher booking operations and audit.** Create authorised researcher-assisted booking, rescheduling, cancellation, restriction overrides, and local audit records.
   - Authorised researchers can operate only within simulated scope and normal booking rules apply before any override.
   - Overrides require warning acknowledgement and a reason; local audit events store actor, timestamp, action, entity references, before/after values, and reason.
+- **Build bulk booking operations.** Create scoped bulk reschedule, cancellation, and notification actions with previews, conflict handling, confirmation, and linked audit records.
+  - Bulk actions preview affected records and conflicts and cannot run until conflicts are resolved and confirmation is given.
+  - A bulk audit ID is created and linked to every affected booking audit event.
 - **Build reception and facility operations views.** Create day-of check-in/no-show operations and facility upcoming-study planning views.
   - Reception and field users see only authorized facility and room appointments with minimum participant data and can check in or mark no-shows with an affects-standing placeholder.
   - Field managers can filter authorized upcoming studies by facility, date range, study, and room.
@@ -125,7 +128,6 @@ Qualified participants already exist in Kinesis / Panel Management and complete 
 
 These planned stories did not pass BuildX's checks, so they are not in the code:
 
-- Build bulk booking operations
 - Run end-to-end local scheduling journeys
 
 ## Tech stack
@@ -140,10 +142,10 @@ These planned stories did not pass BuildX's checks, so they are not in the code:
   workflows/ (1 file)
 docs/ (1 file)
 public/ (1 file)
-src/ (132 files)
+src/ (137 files)
   design-system/ (3 files)
   domain/ (2 files)
-  features/ (118 files)
+  features/ (123 files)
   fixtures/ (1 file)
   infrastructure/ (3 files)
   test/ (1 file)
@@ -206,7 +208,7 @@ Use its variables for colours, fonts, font sizes, spacing and corners. Do not wr
 - `src/features/app-shell/ActorContext.ts`: Defines the current simulated actor context.
 - `src/features/app-shell/ActorProvider.tsx`: Provides local selection and lookup of the simulated actor.
 - `src/features/app-shell/AppShell.css`: Styles the responsive application shell using design-system tokens.
-- `src/features/app-shell/AppShell.tsx`: Wires the scoped reports and appointments feature into the application shell.
+- `src/features/app-shell/AppShell.tsx`: Wires bulk booking operations into authorized study detail routes.
 - `src/features/app-shell/routes.ts`: Adds the authorised reports and appointments route to application navigation.
 - `src/features/app-shell/useCurrentActor.ts`: Exposes the selected simulated actor to application features.
 - `src/features/booking-confirmation/BookingConfirmation.css`: Styles the confirmation content using design-system tokens.
@@ -217,12 +219,15 @@ Use its variables for colours, fonts, font sizes, spacing and corners. Do not wr
 - `src/features/booking-flow/BookingFlow.css`: Styles the booking flow using design-system tokens.
 - `src/features/booking-flow/bookingFlowData.ts`: Evaluates participant booking eligibility, capacity, quota, and visit interval rules.
 - `src/features/booking-flow/BookingFlow.tsx`: Renders accessible, explicitly named available-slot controls in the participant booking flow.
+- `src/features/bulk-booking-operations/BulkBookingOperations.css`: Styles the bulk booking operations controls with design-system tokens.
+- `src/features/bulk-booking-operations/bulkBookingOperationsData.ts`: Builds scoped bulk booking previews, conflict checks, changes, notifications, and linked audit events.
+- `src/features/bulk-booking-operations/BulkBookingOperations.tsx`: Renders scoped bulk booking selection, previews, conflict resolution controls, and explicit confirmation.
 - `src/features/decipher-handoff/DecipherHandoff.css`: Uses valid design-system spacing tokens for responsive participant handoff cards.
 - `src/features/decipher-handoff/decipherHandoffData.ts`: Resolves local Decipher handoff eligibility and provides localized display copy.
 - `src/features/decipher-handoff/DecipherHandoffRoute.tsx`: Scaffold tsx file
 - `src/features/decipher-handoff/DecipherHandoff.tsx`: Scaffold tsx file
-- `src/features/demo-state/DemoStateContext.ts`: Scaffold ts file
-- `src/features/demo-state/DemoStateProvider.tsx`: Scaffold tsx file
+- `src/features/demo-state/DemoStateContext.ts`: Extends the demo-state contract with persisted bulk booking operation support.
+- `src/features/demo-state/DemoStateProvider.tsx`: Persists bulk booking changes, notifications, and audit events through existing local repositories.
 - `src/features/demo-state/useDemoState.ts`: Provides feature components with access to the demo state boundary.
 - `src/features/facility-management/FacilityManagement.css`: Styles the facility management feature using design-system tokens.
 - `src/features/facility-management/facilityManagementData.ts`: Builds and validates locally controlled facility and room records.
@@ -231,10 +236,7 @@ Use its variables for colours, fonts, font sizes, spacing and corners. Do not wr
 - `src/features/facility-operations/facilityOperationsData.ts`: Builds authorized reception and facility-planning records and attendance updates.
 - `src/features/facility-operations/FacilityPlanning.tsx`: Renders field-manager filters for authorized upcoming facility studies.
 - `src/features/facility-operations/ReceptionOperations.tsx`: Renders authorized reception and field attendance operations.
-- `src/features/local-data/lifecycleData.ts`: Validates and persists local JSON export, import, reset, and clear operations.
-- `src/features/local-data/LocalDataControls.css`: Styles the local-data controls using design-system tokens.
-- `src/features/local-data/LocalDataControls.tsx`: Renders local-data lifecycle controls and safely reads uploaded JSON before importing it.
-- and 45 more
+- and 48 more
 
 ## Commands
 
