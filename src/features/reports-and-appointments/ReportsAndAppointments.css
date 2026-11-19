@@ -1,0 +1,129 @@
+.reports-and-appointments {
+  background-color: var(--component-surface-card-bg);
+  border: 1px solid var(--component-surface-card-border);
+  border-radius: var(--primitives-radius-lg);
+  margin: 0 auto;
+  max-width: var(--primitives-spacing-64);
+  padding: var(--primitives-spacing-6);
+}
+
+.reports-and-appointments h1,
+.reports-and-appointments h2,
+.reports-and-appointments p {
+  margin: 0;
+}
+
+.reports-and-appointments > section {
+  border-top: 1px solid var(--semantic-color-border-default-primary);
+  margin-top: var(--primitives-spacing-6);
+  padding-top: var(--primitives-spacing-6);
+}
+
+.reports-and-appointments__notice {
+  color: var(--semantic-color-text-brand-primary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  margin-bottom: var(--primitives-spacing-2);
+}
+
+.reports-and-appointments__description,
+.reports-and-appointments__section-header p,
+.reports-and-appointments__empty {
+  color: var(--semantic-color-text-default-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+
+.reports-and-appointments__description {
+  margin-top: var(--primitives-spacing-2);
+}
+
+.reports-and-appointments__section-header {
+  align-items: end;
+  display: flex;
+  gap: var(--primitives-spacing-4);
+  justify-content: space-between;
+}
+
+.reports-and-appointments__section-header label,
+.reports-and-appointments__filters label {
+  color: var(--component-input-label);
+  display: grid;
+  font-size: var(--primitives-type-font-size-body-small);
+  gap: var(--primitives-spacing-1);
+  line-height: var(--primitives-type-line-height-body-small);
+}
+
+.reports-and-appointments select,
+.reports-and-appointments input {
+  background-color: var(--component-input-background-default);
+  border: 1px solid var(--component-input-border-default);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-input-text-value);
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  padding: var(--primitives-spacing-2);
+}
+
+.reports-and-appointments__export {
+  color: var(--component-button-link-default);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+
+.reports-and-appointments__export:hover {
+  color: var(--component-button-link-hover);
+}
+
+.reports-and-appointments__section-header + .reports-and-appointments__export,
+.reports-and-appointments__empty {
+  display: block;
+  margin-top: var(--primitives-spacing-4);
+}
+
+.reports-and-appointments__filters {
+  display: grid;
+  gap: var(--primitives-spacing-3);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-top: var(--primitives-spacing-5);
+}
+
+.reports-and-appointments__table {
+  border-collapse: collapse;
+  margin-top: var(--primitives-spacing-5);
+  width: 100%;
+}
+
+.reports-and-appointments__table th,
+.reports-and-appointments__table td {
+  border-bottom: 1px solid var(--component-table-row-border);
+  color: var(--component-table-text-cell);
+  padding: var(--primitives-spacing-2);
+  text-align: left;
+}
+
+.reports-and-appointments__table th {
+  background-color: var(--component-table-header-bg);
+  color: var(--component-table-text-header);
+}
+
+@media (max-width: 700px) {
+  .reports-and-appointments,
+  .reports-and-appointments__section-header {
+    display: block;
+  }
+
+  .reports-and-appointments {
+    padding: var(--primitives-spacing-4);
+  }
+
+  .reports-and-appointments__section-header label,
+  .reports-and-appointments__section-header .reports-and-appointments__export {
+    margin-top: var(--primitives-spacing-3);
+  }
+
+  .reports-and-appointments__filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
