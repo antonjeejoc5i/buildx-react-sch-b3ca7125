@@ -8,6 +8,7 @@
   margin: var(--primitives-spacing-6) auto;
   max-width: var(--primitives-spacing-64);
   padding: var(--primitives-spacing-6);
+  width: calc(100% - var(--primitives-spacing-12));
 }
 
 .decipher-handoff__denial {
@@ -91,4 +92,17 @@
   gap: var(--primitives-spacing-2);
   margin: 0;
   padding-left: var(--primitives-spacing-5);
+}
+
+@media (max-width: 700px) {
+  .decipher-handoff,
+  .decipher-handoff__denial {
+    margin: var(--primitives-spacing-4) auto;
+    padding: var(--primitives-spacing-4);
+    width: calc(100% - var(--primitives-spacing-6));
+  }
+
+  .decipher-handoff button {
+    width: 100%;
+  }
 }

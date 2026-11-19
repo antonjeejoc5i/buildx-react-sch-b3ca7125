@@ -183,17 +183,24 @@ export default function BookingFlow({
         </div>
       ) : (
         <ul className="booking-flow__slots">
-          {slots.map((slot) => (
-            <li key={slot.id}>
-              <button type="button" onClick={() => selectSlot(slot.id)}>
-                {formatHandoffTime(
-                  slot.startsAtUtc,
-                  participant.language,
-                  participant.timeZone,
-                )}
-              </button>
-            </li>
-          ))}
+          {slots.map((slot) => {
+            const slotTime = formatHandoffTime(
+              slot.startsAtUtc,
+              participant.language,
+              participant.timeZone,
+            );
+            return (
+              <li key={slot.id}>
+                <button
+                  aria-label={`Select available slot: ${slotTime}`}
+                  type="button"
+                  onClick={() => selectSlot(slot.id)}
+                >
+                  {slotTime}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       )}
       {visitIndex > 0 ? (
