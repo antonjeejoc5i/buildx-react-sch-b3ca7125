@@ -4,6 +4,7 @@ import { useDemoState } from "../demo-state/useDemoState.ts";
 import FacilityManagement from "../facility-management/FacilityManagement.tsx";
 import LocalDataControls from "../local-data/LocalDataControls.tsx";
 import QuotaConfiguration from "../quota-configuration/QuotaConfiguration.tsx";
+import ReportingMetrics from "../reporting-metrics/ReportingMetrics.tsx";
 import ScheduleCopyTemplates from "../schedule-copy-templates/ScheduleCopyTemplates.tsx";
 import SlotManagement from "../slot-management/SlotManagement.tsx";
 import WelcomeScreen from "../welcome/WelcomeScreen.tsx";
@@ -46,7 +47,6 @@ function RouteContent({ data, route }: { data: DemoFixtures; route: Route }) {
     saveScheduleTemplate,
     saveSlot,
   } = useDemoState();
-
   if (route.kind === "overview") return <WelcomeScreen />;
   if (route.kind === "localData") return <LocalDataControls />;
   if (route.kind === "facility") {
@@ -70,28 +70,32 @@ function RouteContent({ data, route }: { data: DemoFixtures; route: Route }) {
     return (
       <section aria-labelledby="study-heading" className="app-shell__detail">
         <p>Study</p>
-        <h1 id="study-heading">{study?.name ?? "Unknown study"}</h1>
-        <span>{study?.description}</span>
-        {study !== undefined ? (
-          <>
-            <QuotaConfiguration
-              bookings={data.bookings}
-              participants={data.participants}
-              quotas={data.quotas}
-              saveQuota={saveQuota}
-              saveStudy={saveStudy}
-              study={study}
-            />
-            <SlotManagement
-              bookingVisits={data.bookingVisits}
-              bookings={data.bookings}
-              saveSlot={saveSlot}
-              slots={data.slots}
-              study={study}
-              waitlistEntries={data.waitlistEntries}
-            />
-          </>
-        ) : null}
+        <h1 id="study-heading">{study.name}</h1>
+        <span>{study.description}</span>
+        <QuotaConfiguration
+          bookings={data.bookings}
+          participants={data.participants}
+          quotas={data.quotas}
+          saveQuota={saveQuota}
+          saveStudy={saveStudy}
+          study={study}
+        />
+        <SlotManagement
+          bookingVisits={data.bookingVisits}
+          bookings={data.bookings}
+          saveSlot={saveSlot}
+          slots={data.slots}
+          study={study}
+          waitlistEntries={data.waitlistEntries}
+        />
+        <ReportingMetrics
+          bookingVisits={data.bookingVisits}
+          bookings={data.bookings}
+          participants={data.participants}
+          quotas={data.quotas}
+          slots={data.slots}
+          study={study}
+        />
         <ScheduleCopyTemplates
           facilities={data.facilities}
           overrides={data.scheduleOverrides}
@@ -113,29 +117,23 @@ function ScopedContent() {
   const { data, error, isLoading } = useDemoState();
   const { actor, selectActor } = useCurrentActor();
   const [hash, setHash] = useState(() => window.location.hash);
-
   useEffect(() => {
     const updateHash = () => setHash(window.location.hash);
     window.addEventListener("hashchange", updateHash);
     return () => window.removeEventListener("hashchange", updateHash);
   }, []);
-
-  if (isLoading || data === null || actor === null) {
+  if (isLoading || data === null || actor === null)
     return <main className="app-shell__loading">Loading local demo data…</main>;
-  }
-  if (error !== null) {
+  if (error !== null)
     return (
       <main className="app-shell__denial" role="alert">
         <h1>Local data is unavailable</h1>
         <p>{error.message}</p>
       </main>
     );
-  }
-
   const route = getRoute(hash);
   const navigationItems = getNavigationItems(data, actor);
   const activeHref = `#${hash.replace(/^#/, "") || "/"}`;
-
   return (
     <div className="app-shell">
       <header className="app-shell__header">
