@@ -7,6 +7,7 @@ import type {
   ScheduleOverride,
   SchedulePattern,
   ScheduleTemplate,
+  Slot,
   Study,
 } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
@@ -142,6 +143,14 @@ export default function DemoStateProvider({
       }),
     [activeRepositories, updateData],
   );
+  const saveSlot = useCallback(
+    async (slot: Slot) =>
+      updateData(async () => {
+        await activeRepositories.slots.put(slot);
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
   const exportData = useCallback(() => exportLocalData(data), [data]);
 
   useEffect(() => {
@@ -164,6 +173,7 @@ export default function DemoStateProvider({
       saveSchedulePattern,
       saveScheduleOverride,
       saveScheduleTemplate,
+      saveSlot,
       exportData,
     }),
     [
@@ -181,6 +191,7 @@ export default function DemoStateProvider({
       saveScheduleOverride,
       saveSchedulePattern,
       saveScheduleTemplate,
+      saveSlot,
       saveStudy,
     ],
   );
