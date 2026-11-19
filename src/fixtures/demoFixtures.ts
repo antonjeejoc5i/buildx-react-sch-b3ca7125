@@ -43,14 +43,12 @@ const facility: Facility = {
   blackoutDates: ["2026-07-04"],
   authorisedRoleIds: ["coordinator", "researcher"],
 };
-
 const room: Room = {
   id: "room-harbor-101",
   facilityId: facility.id,
   name: "Interview Room 101",
   informationalCapacity: 4,
 };
-
 const study: Study = {
   id: "study-morning-routines",
   name: "Morning Routines Research",
@@ -60,17 +58,20 @@ const study: Study = {
   facilityId: facility.id,
   roomId: room.id,
   visits: [
-    {
-      id: "visit-interview",
-      name: "Research interview",
-      durationMinutes: 45,
-    },
+    { id: "visit-interview", name: "Research interview", durationMinutes: 45 },
   ],
   bookingControls: { allowSelfServiceReschedule: true, maxReschedules: 2 },
   notificationSettings: { sendReminderHoursBefore: 24 },
   openedAt: "2026-06-01T09:00:00.000Z",
 };
-
+const closedStudy: Study = {
+  ...study,
+  id: "study-closed-diary",
+  name: "Evening Diary Research",
+  description: "A fictional study about recording everyday evenings.",
+  decipherProjectId: "DCP-DEMO-CLOSED-2049",
+  lifecycleStatus: "closed",
+};
 const pattern: SchedulePattern = {
   id: "pattern-weekday-mornings",
   studyId: study.id,
@@ -83,7 +84,6 @@ const pattern: SchedulePattern = {
   bufferMinutes: 15,
   timeZone: facility.timeZone,
 };
-
 const slot: Slot = {
   id: "slot-2026-06-15-0900",
   studyId: study.id,
@@ -95,7 +95,6 @@ const slot: Slot = {
   eligibilityRules: { minimumAge: 18, language: "English" },
   segmentAssignment: "weekday-commuters",
 };
-
 const participant: Participant = {
   id: "participant-avery-chen",
   name: "Avery Chen",
@@ -104,15 +103,10 @@ const participant: Participant = {
   qualificationState: "eligible",
   language: "English",
   timeZone: "America/New_York",
-  profile: {
-    ageRange: "25-34",
-    postalCode: "11201",
-    transportation: "Subway",
-  },
+  profile: { ageRange: "25-34", postalCode: "11201", transportation: "Subway" },
   screenerAttributes: { employment: "full-time", morningRoutine: "planned" },
   reminderDefault: ["email"],
 };
-
 const booking: Booking = {
   id: "booking-avery-001",
   studyId: study.id,
@@ -128,7 +122,7 @@ const booking: Booking = {
 };
 
 export const demoFixtures: DemoFixtures = {
-  studies: [study],
+  studies: [study, closedStudy],
   facilities: [facility],
   rooms: [room],
   schedulePatterns: [pattern],
@@ -158,6 +152,25 @@ export const demoFixtures: DemoFixtures = {
   participants: [
     participant,
     {
+      id: "participant-quinn-patel",
+      name: "Quinn Patel",
+      email: "quinn.patel@example.test",
+      phone: "+1-555-0103",
+      qualificationState: "eligible",
+      language: "English",
+      timeZone: "America/New_York",
+      profile: {
+        ageRange: "25-34",
+        postalCode: "11201",
+        transportation: "Subway",
+      },
+      screenerAttributes: {
+        employment: "full-time",
+        morningRoutine: "planned",
+      },
+      reminderDefault: ["email"],
+    },
+    {
       id: "participant-morgan-reed",
       name: "Morgan Reed",
       email: "morgan.reed@example.test",
@@ -175,6 +188,34 @@ export const demoFixtures: DemoFixtures = {
         morningRoutine: "flexible",
       },
       reminderDefault: ["email", "sms"],
+    },
+    {
+      id: "participant-riley-stone",
+      name: "Riley Stone",
+      email: "riley.stone@example.test",
+      phone: "+1-555-0104",
+      qualificationState: "eligible",
+      language: "English",
+      timeZone: "America/New_York",
+      profile: { ageRange: "", postalCode: "10001", transportation: "Subway" },
+      screenerAttributes: { employment: "full-time" },
+      reminderDefault: ["email"],
+    },
+    {
+      id: "participant-jordan-lee",
+      name: "Jordan Lee",
+      email: "jordan.lee@example.test",
+      phone: "+1-555-0105",
+      qualificationState: "eligible",
+      language: "English",
+      timeZone: "America/New_York",
+      profile: {
+        ageRange: "45-54",
+        postalCode: "11215",
+        transportation: "Walk",
+      },
+      screenerAttributes: { employment: "full-time" },
+      reminderDefault: ["email"],
     },
   ],
   bookings: [booking],

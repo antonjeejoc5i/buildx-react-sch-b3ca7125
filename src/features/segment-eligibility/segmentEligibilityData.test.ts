@@ -7,7 +7,9 @@ import {
 
 const slot = demoFixtures.slots[0]!;
 const avery = demoFixtures.participants[0]!;
-const morgan = demoFixtures.participants[1]!;
+const morgan = demoFixtures.participants.find(
+  (participant) => participant.id === "participant-morgan-reed",
+)!;
 
 const combinedConfiguration: SegmentEligibilityConfiguration = {
   criteria: {
