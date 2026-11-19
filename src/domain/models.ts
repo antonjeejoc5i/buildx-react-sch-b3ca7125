@@ -30,10 +30,16 @@ export interface Room extends IdentifiedRecord {
   informationalCapacity: number;
 }
 
+export type ConsecutiveVisitInterval =
+  | { kind: "same-day" }
+  | { kind: "exact-day"; day: number }
+  | { kind: "day-window"; minimumDay: number; maximumDay: number };
+
 export interface Visit {
   id: Identifier;
   name: string;
   durationMinutes: number;
+  intervalFromPrevious?: ConsecutiveVisitInterval;
 }
 
 export interface Study extends IdentifiedRecord {
