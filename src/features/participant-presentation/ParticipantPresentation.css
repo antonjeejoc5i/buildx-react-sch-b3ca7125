@@ -1,0 +1,72 @@
+.participant-presentation {
+  display: grid;
+  gap: var(--primitives-spacing-4);
+  margin: var(--primitives-spacing-6) auto 0;
+  max-width: var(--primitives-spacing-64);
+}
+
+.participant-presentation header p,
+.participant-presentation header h2,
+.participant-presentation__preview p {
+  margin: 0;
+}
+
+.participant-presentation header p,
+.participant-presentation__preview p {
+  color: var(--semantic-color-text-default-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+
+.participant-presentation__controls,
+.participant-presentation__preview {
+  background-color: var(--component-surface-card-bg);
+  border: 1px solid var(--component-surface-card-border);
+  border-radius: var(--primitives-radius-lg);
+  display: grid;
+  gap: var(--primitives-spacing-4);
+  padding: var(--primitives-spacing-5);
+}
+
+.participant-presentation__controls label {
+  color: var(--component-input-label);
+  display: grid;
+  font-size: var(--primitives-type-font-size-body-medium);
+  gap: var(--primitives-spacing-1);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+
+.participant-presentation select {
+  background-color: var(--component-dropdown-background-default);
+  border: 1px solid var(--component-dropdown-border-default);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-dropdown-option-text-default);
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  padding: var(--primitives-spacing-2);
+}
+
+.participant-presentation__preview dl {
+  display: grid;
+  gap: var(--primitives-spacing-3);
+  margin: 0;
+}
+
+.participant-presentation__preview dl div {
+  display: grid;
+  gap: var(--primitives-spacing-1);
+}
+
+.participant-presentation__preview dt {
+  color: var(--semantic-color-text-default-secondary);
+  font-size: var(--primitives-type-font-size-caption);
+  line-height: var(--primitives-type-line-height-caption);
+}
+
+.participant-presentation__preview dd {
+  color: var(--semantic-color-text-default-primary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  margin: 0;
+}
