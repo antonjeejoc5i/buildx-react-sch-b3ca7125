@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
+import BookingFlow from "../booking-flow/BookingFlow.tsx";
 import {
   formatHandoffTime,
   getHandoffCopy,
@@ -62,9 +63,6 @@ export default function DecipherHandoff({
     );
   }
 
-  const slots = data.slots.filter(
-    (slot) => slot.studyId === result.study.id && slot.status === "primary",
-  );
   return (
     <main className="decipher-handoff" aria-labelledby="handoff-heading">
       <p className="decipher-handoff__eyebrow">{copy.summary}</p>
@@ -77,23 +75,11 @@ export default function DecipherHandoff({
         </div>
       </dl>
       {showSlots ? (
-        <section
-          className="decipher-handoff__slots"
-          aria-labelledby="slots-heading"
-        >
-          <h2 id="slots-heading">{copy.selectSlot}</h2>
-          <ul>
-            {slots.map((slot) => (
-              <li key={slot.id}>
-                {formatHandoffTime(
-                  slot.startsAtUtc,
-                  result.participant.language,
-                  result.participant.timeZone,
-                )}
-              </li>
-            ))}
-          </ul>
-        </section>
+        <BookingFlow
+          data={data}
+          participant={result.participant}
+          study={result.study}
+        />
       ) : (
         <button type="button" onClick={() => setShowSlots(true)}>
           {copy.continue}
