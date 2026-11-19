@@ -38,6 +38,10 @@ export class IndexedDbRepository<
     await this.request<IDBValidKey>("readwrite", (store) => store.put(record));
   }
 
+  async delete(id: string): Promise<void> {
+    await this.request<undefined>("readwrite", (store) => store.delete(id));
+  }
+
   async clear(): Promise<void> {
     await this.request<undefined>("readwrite", (store) => store.clear());
   }
