@@ -22,6 +22,7 @@ test("requires confirmation before clearing local data and states the simulation
         saveSchedulePattern: vi.fn().mockResolvedValue(undefined),
         saveScheduleOverride: vi.fn().mockResolvedValue(undefined),
         saveScheduleTemplate: vi.fn().mockResolvedValue(undefined),
+        saveSlot: vi.fn().mockResolvedValue(undefined),
         exportData: vi.fn().mockReturnValue("{}"),
       }}
     >

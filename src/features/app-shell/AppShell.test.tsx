@@ -37,6 +37,7 @@ function renderShell() {
         saveSchedulePattern: async () => undefined,
         saveScheduleOverride: async () => undefined,
         saveScheduleTemplate: async () => undefined,
+        saveSlot: async () => undefined,
         exportData: () => "{}",
       }}
     >

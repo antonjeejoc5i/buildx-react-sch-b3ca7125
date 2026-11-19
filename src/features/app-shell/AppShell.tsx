@@ -5,6 +5,7 @@ import FacilityManagement from "../facility-management/FacilityManagement.tsx";
 import LocalDataControls from "../local-data/LocalDataControls.tsx";
 import QuotaConfiguration from "../quota-configuration/QuotaConfiguration.tsx";
 import ScheduleCopyTemplates from "../schedule-copy-templates/ScheduleCopyTemplates.tsx";
+import SlotManagement from "../slot-management/SlotManagement.tsx";
 import WelcomeScreen from "../welcome/WelcomeScreen.tsx";
 import ActorProvider from "./ActorProvider.tsx";
 import {
@@ -43,6 +44,7 @@ function RouteContent({ data, route }: { data: DemoFixtures; route: Route }) {
     saveScheduleOverride,
     saveSchedulePattern,
     saveScheduleTemplate,
+    saveSlot,
   } = useDemoState();
 
   if (route.kind === "overview") return <WelcomeScreen />;
@@ -71,14 +73,24 @@ function RouteContent({ data, route }: { data: DemoFixtures; route: Route }) {
         <h1 id="study-heading">{study?.name ?? "Unknown study"}</h1>
         <span>{study?.description}</span>
         {study !== undefined ? (
-          <QuotaConfiguration
-            bookings={data.bookings}
-            participants={data.participants}
-            quotas={data.quotas}
-            saveQuota={saveQuota}
-            saveStudy={saveStudy}
-            study={study}
-          />
+          <>
+            <QuotaConfiguration
+              bookings={data.bookings}
+              participants={data.participants}
+              quotas={data.quotas}
+              saveQuota={saveQuota}
+              saveStudy={saveStudy}
+              study={study}
+            />
+            <SlotManagement
+              bookingVisits={data.bookingVisits}
+              bookings={data.bookings}
+              saveSlot={saveSlot}
+              slots={data.slots}
+              study={study}
+              waitlistEntries={data.waitlistEntries}
+            />
+          </>
         ) : null}
         <ScheduleCopyTemplates
           facilities={data.facilities}
