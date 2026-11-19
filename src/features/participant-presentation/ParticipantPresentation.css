@@ -3,6 +3,7 @@
   gap: var(--primitives-spacing-4);
   margin: var(--primitives-spacing-6) auto 0;
   max-width: var(--primitives-spacing-64);
+  width: calc(100% - var(--primitives-spacing-12));
 }
 
 .participant-presentation header p,
@@ -25,6 +26,7 @@
   border-radius: var(--primitives-radius-lg);
   display: grid;
   gap: var(--primitives-spacing-4);
+  min-width: 0;
   padding: var(--primitives-spacing-5);
 }
 
@@ -44,6 +46,7 @@
   font-family: var(--primitives-type-font-family-secondary);
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
+  max-width: 100%;
   padding: var(--primitives-spacing-2);
 }
 
@@ -69,4 +72,20 @@
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   margin: 0;
+}
+
+@media (max-width: 700px) {
+  .participant-presentation {
+    margin-top: var(--primitives-spacing-4);
+    width: calc(100% - var(--primitives-spacing-6));
+  }
+
+  .participant-presentation__controls,
+  .participant-presentation__preview {
+    padding: var(--primitives-spacing-4);
+  }
+
+  .participant-presentation select {
+    width: 100%;
+  }
 }
