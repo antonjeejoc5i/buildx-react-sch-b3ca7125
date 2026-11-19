@@ -2,7 +2,8 @@ export type Identifier = string;
 export type JsonValue =
   string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
-export type StudyLifecycleStatus = "draft" | "open" | "paused" | "closed";
+export type StudyLifecycleStatus =
+  "draft" | "open" | "paused" | "closed" | "archived";
 export type QualificationState = "eligible" | "pending" | "ineligible";
 export type BookingStatus = "draft" | "confirmed" | "cancelled" | "completed";
 export type BookingVisitStatus =
@@ -192,6 +193,13 @@ export class LocalProfileError extends Error {
   }
 }
 
+export class StudyBookingError extends Error {
+  constructor(studyId: Identifier) {
+    super(`Study ${studyId} is not open for participant bookings.`);
+    this.name = "StudyBookingError";
+  }
+}
+
 export function requireParticipantProfile(
   participant: Participant,
 ): ParticipantProfile {
@@ -204,4 +212,14 @@ export function requireParticipantProfile(
   }
 
   return participant.profile;
+}
+
+export function canAcceptNewBookings(study: Study): boolean {
+  return study.lifecycleStatus === "open";
+}
+
+export function requireStudyOpenForBooking(study: Study): void {
+  if (!canAcceptNewBookings(study)) {
+    throw new StudyBookingError(study.id);
+  }
 }
