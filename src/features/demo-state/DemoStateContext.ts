@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { Facility, Room, Study } from "../../domain/models.ts";
+import type { Facility, Quota, Room, Study } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 
 export interface DemoState {
@@ -13,6 +13,7 @@ export interface DemoState {
   saveFacility: (facility: Facility) => Promise<void>;
   saveRoom: (room: Room) => Promise<void>;
   saveStudy: (study: Study) => Promise<void>;
+  saveQuota: (quota: Quota) => Promise<void>;
   exportData: () => string;
 }
 
