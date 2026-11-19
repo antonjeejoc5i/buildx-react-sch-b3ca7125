@@ -1,6 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PropsWithChildren } from "react";
-import type { Facility, Quota, Room, Study } from "../../domain/models.ts";
+import type {
+  Facility,
+  Quota,
+  Room,
+  ScheduleOverride,
+  SchedulePattern,
+  ScheduleTemplate,
+  Study,
+} from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import { demoFixtures } from "../../fixtures/demoFixtures.ts";
 import type { SchedulingRepositories } from "../../domain/repositories.ts";
@@ -110,6 +118,30 @@ export default function DemoStateProvider({
       }),
     [activeRepositories, updateData],
   );
+  const saveSchedulePattern = useCallback(
+    async (pattern: SchedulePattern) =>
+      updateData(async () => {
+        await activeRepositories.schedulePatterns.put(pattern);
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
+  const saveScheduleOverride = useCallback(
+    async (override: ScheduleOverride) =>
+      updateData(async () => {
+        await activeRepositories.scheduleOverrides.put(override);
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
+  const saveScheduleTemplate = useCallback(
+    async (template: ScheduleTemplate) =>
+      updateData(async () => {
+        await activeRepositories.scheduleTemplates.put(template);
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
   const exportData = useCallback(() => exportLocalData(data), [data]);
 
   useEffect(() => {
@@ -129,6 +161,9 @@ export default function DemoStateProvider({
       saveRoom,
       saveStudy,
       saveQuota,
+      saveSchedulePattern,
+      saveScheduleOverride,
+      saveScheduleTemplate,
       exportData,
     }),
     [
@@ -143,6 +178,9 @@ export default function DemoStateProvider({
       saveFacility,
       saveQuota,
       saveRoom,
+      saveScheduleOverride,
+      saveSchedulePattern,
+      saveScheduleTemplate,
       saveStudy,
     ],
   );
