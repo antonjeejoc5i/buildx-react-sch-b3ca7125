@@ -1,0 +1,84 @@
+.study-editor {
+  display: grid;
+  gap: var(--primitives-spacing-6);
+  margin: 0 auto;
+  max-width: var(--primitives-spacing-64);
+}
+.study-editor header p,
+.study-editor header h1,
+.study-editor__card h2 {
+  margin: 0;
+}
+.study-editor header p {
+  color: var(--semantic-color-text-default-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+.study-editor__card {
+  background-color: var(--component-surface-card-bg);
+  border: 1px solid var(--component-surface-card-border);
+  border-radius: var(--primitives-radius-lg);
+  display: grid;
+  gap: var(--primitives-spacing-4);
+  padding: var(--primitives-spacing-6);
+}
+.study-editor__card h2 {
+  font-size: var(--primitives-type-font-size-title-small);
+  line-height: var(--primitives-type-line-height-title-small);
+}
+.study-editor label {
+  color: var(--component-input-label);
+  display: grid;
+  font-size: var(--primitives-type-font-size-body-medium);
+  gap: var(--primitives-spacing-1);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+.study-editor input,
+.study-editor textarea,
+.study-editor select {
+  background-color: var(--component-input-background-default);
+  border: 1px solid var(--component-input-border-default);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-input-text-value);
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  padding: var(--primitives-spacing-2);
+}
+.study-editor textarea {
+  min-height: var(--primitives-spacing-16);
+  resize: vertical;
+}
+.study-editor input:disabled,
+.study-editor select:disabled {
+  background-color: var(--component-input-background-disabled);
+  border-color: var(--component-input-border-disabled);
+  color: var(--component-input-text-disabled);
+}
+.study-editor__checkbox {
+  align-items: center;
+  display: flex !important;
+  gap: var(--primitives-spacing-2) !important;
+}
+.study-editor__checkbox input {
+  padding: 0;
+}
+.study-editor button {
+  background-color: var(--component-button-primary-default-background);
+  border: 1px solid var(--component-button-primary-default-background);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-button-primary-default-text);
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
+  width: fit-content;
+}
+.study-editor__message {
+  background-color: var(--semantic-color-status-status-light-info);
+  border: 1px solid var(--semantic-color-status-info);
+  border-radius: var(--primitives-radius-md);
+  color: var(--semantic-color-text-default-primary);
+  margin: 0;
+  padding: var(--primitives-spacing-3);
+}

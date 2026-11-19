@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PropsWithChildren } from "react";
-import type { Facility, Room } from "../../domain/models.ts";
+import type { Facility, Room, Study } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import { demoFixtures } from "../../fixtures/demoFixtures.ts";
 import type { SchedulingRepositories } from "../../domain/repositories.ts";
@@ -86,9 +86,18 @@ export default function DemoStateProvider({
         if (
           (await activeRepositories.facilities.get(room.facilityId)) ===
           undefined
-        )
+        ) {
           throw new Error("A room must belong to an existing facility.");
+        }
         await activeRepositories.rooms.put(room);
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
+  const saveStudy = useCallback(
+    async (study: Study) =>
+      updateData(async () => {
+        await activeRepositories.studies.put(study);
         return loadLocalData(activeRepositories);
       }),
     [activeRepositories, updateData],
@@ -108,6 +117,7 @@ export default function DemoStateProvider({
       clearData,
       saveFacility,
       saveRoom,
+      saveStudy,
       exportData,
     }),
     [
@@ -121,6 +131,7 @@ export default function DemoStateProvider({
       resetToSeed,
       saveFacility,
       saveRoom,
+      saveStudy,
     ],
   );
   return (

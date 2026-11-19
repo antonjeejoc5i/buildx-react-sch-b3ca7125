@@ -31,6 +31,7 @@ function renderShell() {
         clearData: async () => undefined,
         saveFacility: async () => undefined,
         saveRoom: async () => undefined,
+        saveStudy: async () => undefined,
         exportData: () => "{}",
       }}
     >
