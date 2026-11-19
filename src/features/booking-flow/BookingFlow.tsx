@@ -1,10 +1,16 @@
 import { useState } from "react";
-import type { Participant, Study } from "../../domain/models.ts";
+import type {
+  Booking,
+  BookingVisit,
+  Participant,
+  Study,
+} from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import { formatHandoffTime } from "../decipher-handoff/decipherHandoffData.ts";
 import {
   availablePrimarySlots,
   bookingRuleMessage,
+  buildConfirmedBooking,
   evaluateBookingPlan,
   type BookingRuleFailure,
 } from "./bookingFlowData.ts";
@@ -14,13 +20,23 @@ interface BookingFlowProps {
   data: DemoFixtures;
   participant: Participant;
   study: Study;
+  /** Saves the confirmed booking locally, so it is still there after a reload. */
+  saveParticipation?: (
+    booking: Booking,
+    bookingVisits: BookingVisit[],
+  ) => Promise<void>;
+  /** Called with the saved booking's id once it is confirmed. */
+  onConfirmed?: (bookingId: string) => void;
 }
 
 export default function BookingFlow({
   data,
   participant,
   study,
+  saveParticipation,
+  onConfirmed,
 }: BookingFlowProps) {
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [selectedSlotByVisit, setSelectedSlotByVisit] = useState<
     Record<string, string>
   >({});
@@ -38,18 +54,37 @@ export default function BookingFlow({
     setVisitIndex((current) => current + 1);
   }
 
-  function confirmBooking() {
+  async function confirmBooking() {
     const evaluation = evaluateBookingPlan(
       data,
       study,
       participant,
       selectedSlotByVisit,
     );
-    if (evaluation.allowed) {
-      setConfirmed(true);
+    if (!evaluation.allowed) {
+      setFailures(evaluation.failures);
       return;
     }
-    setFailures(evaluation.failures);
+    const { booking, bookingVisits } = buildConfirmedBooking(
+      data,
+      study,
+      participant,
+      selectedSlotByVisit,
+      `booking-${crypto.randomUUID()}`,
+      new Date().toISOString(),
+    );
+    try {
+      setSaveError(null);
+      onConfirmed?.(booking.id);
+      await saveParticipation?.(booking, bookingVisits);
+      setConfirmed(true);
+    } catch (error) {
+      setSaveError(
+        error instanceof Error
+          ? error.message
+          : "The booking could not be saved locally.",
+      );
+    }
   }
 
   if (confirmed) {
@@ -144,10 +179,15 @@ export default function BookingFlow({
           >
             Back to selection
           </button>
-          <button type="button" onClick={confirmBooking}>
+          <button type="button" onClick={() => void confirmBooking()}>
             Confirm booking
           </button>
         </div>
+        {saveError === null ? null : (
+          <p className="booking-flow__failure" role="alert">
+            {saveError}
+          </p>
+        )}
       </section>
     );
   }

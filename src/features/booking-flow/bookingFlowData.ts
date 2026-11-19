@@ -1,4 +1,10 @@
-import type { Participant, Slot, Study } from "../../domain/models.ts";
+import type {
+  Booking,
+  BookingVisit,
+  Participant,
+  Slot,
+  Study,
+} from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import { evaluateBookingQuota } from "../quota-configuration/quotaConfigurationData.ts";
 import { evaluateSlotBooking } from "../slot-management/slotManagementData.ts";
@@ -201,4 +207,51 @@ export function bookingRuleMessage(reason: BookingRuleFailure): string {
     "slot-not-found": "This selected slot is no longer available.",
   };
   return messages[reason];
+}
+
+/**
+ * The confirmed booking and its visits for a revalidated plan, ready to save. `id` and `now` are
+ * passed in so the result is deterministic in tests.
+ */
+export function buildConfirmedBooking(
+  data: DemoFixtures,
+  study: Study,
+  participant: Participant,
+  selectedSlotByVisit: Record<string, string>,
+  id: string,
+  now: string,
+): { booking: Booking; bookingVisits: BookingVisit[] } {
+  const slots = study.visits.map((visit) => {
+    const slot = data.slots.find(
+      (item) => item.id === selectedSlotByVisit[visit.id],
+    );
+    if (slot === undefined)
+      throw new Error(`No slot is selected for ${visit.name}.`);
+    return { visit, slot };
+  });
+  return {
+    booking: {
+      id,
+      studyId: study.id,
+      participantId: participant.id,
+      status: "confirmed",
+      selectedVisitIds: slots.map(({ visit }) => visit.id),
+      selectedSlotIds: slots.map(({ slot }) => slot.id),
+      reminderPreference: [...participant.reminderDefault],
+      selfServiceRescheduleCount: 0,
+      source: "participant-handoff",
+      createdAt: now,
+      updatedAt: now,
+    },
+    bookingVisits: slots.map(({ visit, slot }) => ({
+      id: `${id}-${visit.id}`,
+      bookingId: id,
+      visitId: visit.id,
+      slotId: slot.id,
+      startsAtUtc: slot.startsAtUtc,
+      status: "scheduled",
+      noShow: false,
+      affectsStanding: false,
+    })),
+  };
 }

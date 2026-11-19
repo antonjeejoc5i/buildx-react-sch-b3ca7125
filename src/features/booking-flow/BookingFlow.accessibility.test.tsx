@@ -3,7 +3,7 @@ import { expect, test } from "vitest";
 import { demoFixtures } from "../../fixtures/demoFixtures.ts";
 import BookingFlow from "./BookingFlow.tsx";
 
-test("provides a named, focusable available-slot control and announces confirmation", () => {
+test("provides a named, focusable available-slot control and announces confirmation", async () => {
   const participant = demoFixtures.participants.find(
     (item) => item.id === "participant-quinn-patel",
   );
@@ -34,5 +34,7 @@ test("provides a named, focusable available-slot control and announces confirmat
   fireEvent.click(availableSlot);
   fireEvent.click(screen.getByRole("button", { name: "Confirm booking" }));
 
-  expect(screen.getByRole("status").textContent).toContain("Booking confirmed");
+  expect((await screen.findByRole("status")).textContent).toContain(
+    "Booking confirmed",
+  );
 });

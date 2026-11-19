@@ -4,6 +4,7 @@ import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import BulkBookingOperations from "../bulk-booking-operations/BulkBookingOperations.tsx";
 import { useDemoState } from "../demo-state/useDemoState.ts";
 import FacilityManagement from "../facility-management/FacilityManagement.tsx";
+import ReceptionOperations from "../facility-operations/ReceptionOperations.tsx";
 import LocalDataControls from "../local-data/LocalDataControls.tsx";
 import QuotaConfiguration from "../quota-configuration/QuotaConfiguration.tsx";
 import ReportingMetrics from "../reporting-metrics/ReportingMetrics.tsx";
@@ -49,6 +50,7 @@ function RouteContent({
   route: Route;
 }) {
   const {
+    saveBookingParticipation,
     saveBulkBookingOperation,
     saveFacility,
     saveQuota,
@@ -61,22 +63,40 @@ function RouteContent({
   } = useDemoState();
   if (route.kind === "overview") return <WelcomeScreen />;
   if (route.kind === "localData") return <LocalDataControls />;
-  if (route.kind === "reports") {
+  if (route.kind === "reports")
     return <ReportsAndAppointments actor={actor} data={data} />;
-  }
   if (route.kind === "facility") {
     const facility = data.facilities.find(
       (item) => item.id === route.facilityId,
     );
     if (facility === undefined) return <DeniedRoute />;
     return (
-      <FacilityManagement
-        demoUsers={data.demoUsers}
-        facility={facility}
-        rooms={data.rooms.filter((room) => room.facilityId === facility.id)}
-        saveFacility={saveFacility}
-        saveRoom={saveRoom}
-      />
+      <>
+        <FacilityManagement
+          demoUsers={data.demoUsers}
+          facility={facility}
+          rooms={data.rooms.filter((room) => room.facilityId === facility.id)}
+          saveFacility={saveFacility}
+          saveRoom={saveRoom}
+        />
+        <ReceptionOperations
+          authorisedFacilityIds={actor.authorisedFacilityIds}
+          bookingVisits={data.bookingVisits}
+          bookings={data.bookings}
+          participants={data.participants}
+          rooms={data.rooms}
+          saveBookingVisit={async (bookingVisit) => {
+            const booking = data.bookings.find(
+              (item) => item.id === bookingVisit.bookingId,
+            );
+            if (booking === undefined)
+              throw new Error("The appointment booking is unavailable.");
+            await saveBookingParticipation(booking, [bookingVisit]);
+          }}
+          slots={data.slots}
+          studies={data.studies}
+        />
+      </>
     );
   }
   if (route.kind === "study") {
@@ -138,12 +158,14 @@ function ScopedContent() {
   const { data, error, isLoading } = useDemoState();
   const { actor, selectActor } = useCurrentActor();
   const [hash, setHash] = useState(() => window.location.hash);
+
   useEffect(() => {
     const updateHash = () => setHash(window.location.hash);
     window.addEventListener("hashchange", updateHash);
     return () => window.removeEventListener("hashchange", updateHash);
   }, []);
-  if (isLoading || data === null || actor === null)
+
+  if ((isLoading && data === null) || actor === null)
     return <main className="app-shell__loading">Loading local demo data…</main>;
   if (error !== null)
     return (
@@ -152,9 +174,18 @@ function ScopedContent() {
         <p>{error.message}</p>
       </main>
     );
+  if (data === null)
+    return (
+      <main className="app-shell__denial" role="alert">
+        <h1>Local data is unavailable</h1>
+        <p>Local demo data could not be loaded.</p>
+      </main>
+    );
+
   const route = getRoute(hash);
   const navigationItems = getNavigationItems(data, actor);
   const activeHref = `#${hash.replace(/^#/, "") || "/"}`;
+
   return (
     <div className="app-shell">
       <header className="app-shell__header">
