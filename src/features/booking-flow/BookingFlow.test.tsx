@@ -1,10 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { expect, test } from "vitest";
-import type { Slot, Study } from "../../domain/models.ts";
+import { expect, test, vi } from "vitest";
+import type {
+  Booking,
+  BookingVisit,
+  Slot,
+  Study,
+} from "../../domain/models.ts";
 import { demoFixtures } from "../../fixtures/demoFixtures.ts";
 import BookingFlow from "./BookingFlow.tsx";
 
-test("requires every visit in one local hold flow before confirmation", () => {
+test("requires every visit in one local hold flow before confirmation", async () => {
   const participant = demoFixtures.participants.find(
     (item) => item.id === "participant-quinn-patel",
   );
@@ -45,7 +50,17 @@ test("requires every visit in one local hold flow before confirmation", () => {
     bookingVisits: [],
   };
 
-  render(<BookingFlow data={data} participant={participant} study={study} />);
+  const saveParticipation = vi.fn<
+    (booking: Booking, bookingVisits: BookingVisit[]) => Promise<void>
+  >(async () => undefined);
+  render(
+    <BookingFlow
+      data={data}
+      participant={participant}
+      saveParticipation={saveParticipation}
+      study={study}
+    />,
+  );
 
   expect(screen.getByText("Visit 1 of 2")).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: /June 16/ }));
@@ -57,6 +72,18 @@ test("requires every visit in one local hold flow before confirmation", () => {
   expect(screen.getByText(/held locally/i)).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Confirm booking" }));
   expect(
-    screen.getByRole("heading", { name: "Booking confirmed" }),
+    await screen.findByRole("heading", { name: "Booking confirmed" }),
   ).toBeTruthy();
+  expect(saveParticipation).toHaveBeenCalledTimes(1);
+  const [booking, bookingVisits] = saveParticipation.mock.calls[0]!;
+  expect(booking).toMatchObject({
+    studyId: study.id,
+    participantId: participant.id,
+    status: "confirmed",
+    selectedSlotIds: ["first", "second"],
+  });
+  expect(bookingVisits.map((visit) => visit.slotId)).toEqual([
+    "first",
+    "second",
+  ]);
 });

@@ -9,8 +9,7 @@ function getHandoffPath(hash: string) {
 }
 
 export default function DecipherHandoffRoute() {
-  const { data, isLoading, saveBookingParticipation, saveWaitlistEntry } =
-    useDemoState();
+  const { data, saveBookingParticipation, saveWaitlistEntry } = useDemoState();
   const [hash, setHash] = useState(() => window.location.hash);
 
   useEffect(() => {
@@ -20,7 +19,8 @@ export default function DecipherHandoffRoute() {
   }, []);
 
   const handoffPath = getHandoffPath(hash);
-  if (handoffPath === null || isLoading || data === null) return null;
+  // Wait for the first load only: hiding the page during a save would lose its state.
+  if (handoffPath === null || data === null) return null;
 
   return (
     <DecipherHandoff

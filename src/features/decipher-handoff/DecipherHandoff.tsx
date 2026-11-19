@@ -31,6 +31,9 @@ export default function DecipherHandoff({
   saveParticipation,
 }: DecipherHandoffProps) {
   const [showSlots, setShowSlots] = useState(false);
+  // The booking made on this page: once saved, it keeps showing its confirmation here rather
+  // than switching to the existing-appointment view, which is what a later visit shows.
+  const [bookedHereId, setBookedHereId] = useState<string | null>(null);
   const result = resolveHandoff(
     data.studies,
     data.participants,
@@ -50,7 +53,10 @@ export default function DecipherHandoff({
   }
 
   const copy = getHandoffCopy(result.participant.language);
-  if (result.kind === "existing-booking") {
+  if (
+    result.kind === "existing-booking" &&
+    result.booking.id !== bookedHereId
+  ) {
     const booking = data.bookings.find((item) => item.id === result.booking.id);
     return (
       <main className="decipher-handoff" aria-labelledby="handoff-heading">
@@ -99,7 +105,9 @@ export default function DecipherHandoff({
         <>
           <BookingFlow
             data={data}
+            onConfirmed={setBookedHereId}
             participant={result.participant}
+            saveParticipation={saveParticipation}
             study={result.study}
           />
           {saveWaitlistEntry === undefined ? null : (
