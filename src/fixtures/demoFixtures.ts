@@ -60,7 +60,11 @@ const study: Study = {
   visits: [
     { id: "visit-interview", name: "Research interview", durationMinutes: 45 },
   ],
-  bookingControls: { allowSelfServiceReschedule: true, maxReschedules: 2 },
+  bookingControls: {
+    allowSelfServiceReschedule: true,
+    maxReschedules: 2,
+    waitlistEnabled: true,
+  },
   notificationSettings: { sendReminderHoursBefore: 24 },
   openedAt: "2026-06-01T09:00:00.000Z",
 };

@@ -1,6 +1,8 @@
 import { useState } from "react";
+import type { WaitlistEntry } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import BookingFlow from "../booking-flow/BookingFlow.tsx";
+import WaitlistEnrollment from "../waitlist/WaitlistEnrollment.tsx";
 import {
   formatHandoffTime,
   getHandoffCopy,
@@ -12,12 +14,14 @@ interface DecipherHandoffProps {
   data: DemoFixtures;
   participantId: string;
   projectId: string;
+  saveWaitlistEntry?: (entry: WaitlistEntry) => Promise<void>;
 }
 
 export default function DecipherHandoff({
   data,
   participantId,
   projectId,
+  saveWaitlistEntry,
 }: DecipherHandoffProps) {
   const [showSlots, setShowSlots] = useState(false);
   const result = resolveHandoff(
@@ -75,11 +79,21 @@ export default function DecipherHandoff({
         </div>
       </dl>
       {showSlots ? (
-        <BookingFlow
-          data={data}
-          participant={result.participant}
-          study={result.study}
-        />
+        <>
+          <BookingFlow
+            data={data}
+            participant={result.participant}
+            study={result.study}
+          />
+          {saveWaitlistEntry === undefined ? null : (
+            <WaitlistEnrollment
+              data={data}
+              participant={result.participant}
+              saveWaitlistEntry={saveWaitlistEntry}
+              study={result.study}
+            />
+          )}
+        </>
       ) : (
         <button type="button" onClick={() => setShowSlots(true)}>
           {copy.continue}
