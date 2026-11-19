@@ -34,6 +34,9 @@ function renderShell() {
         saveRoom: async () => undefined,
         saveStudy: async () => undefined,
         saveQuota: async () => undefined,
+        saveSchedulePattern: async () => undefined,
+        saveScheduleOverride: async () => undefined,
+        saveScheduleTemplate: async () => undefined,
         exportData: () => "{}",
       }}
     >

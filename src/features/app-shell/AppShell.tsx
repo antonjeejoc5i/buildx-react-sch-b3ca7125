@@ -4,6 +4,7 @@ import { useDemoState } from "../demo-state/useDemoState.ts";
 import FacilityManagement from "../facility-management/FacilityManagement.tsx";
 import LocalDataControls from "../local-data/LocalDataControls.tsx";
 import QuotaConfiguration from "../quota-configuration/QuotaConfiguration.tsx";
+import ScheduleCopyTemplates from "../schedule-copy-templates/ScheduleCopyTemplates.tsx";
 import WelcomeScreen from "../welcome/WelcomeScreen.tsx";
 import ActorProvider from "./ActorProvider.tsx";
 import {
@@ -34,7 +35,15 @@ function DeniedRoute() {
 }
 
 function RouteContent({ data, route }: { data: DemoFixtures; route: Route }) {
-  const { saveFacility, saveQuota, saveRoom, saveStudy } = useDemoState();
+  const {
+    saveFacility,
+    saveQuota,
+    saveRoom,
+    saveStudy,
+    saveScheduleOverride,
+    saveSchedulePattern,
+    saveScheduleTemplate,
+  } = useDemoState();
 
   if (route.kind === "overview") return <WelcomeScreen />;
   if (route.kind === "localData") return <LocalDataControls />;
@@ -55,6 +64,7 @@ function RouteContent({ data, route }: { data: DemoFixtures; route: Route }) {
   }
   if (route.kind === "study") {
     const study = data.studies.find((item) => item.id === route.studyId);
+    if (study === undefined) return <DeniedRoute />;
     return (
       <section aria-labelledby="study-heading" className="app-shell__detail">
         <p>Study</p>
@@ -70,6 +80,17 @@ function RouteContent({ data, route }: { data: DemoFixtures; route: Route }) {
             study={study}
           />
         ) : null}
+        <ScheduleCopyTemplates
+          facilities={data.facilities}
+          overrides={data.scheduleOverrides}
+          patterns={data.schedulePatterns}
+          saveOverride={saveScheduleOverride}
+          savePattern={saveSchedulePattern}
+          saveTemplate={saveScheduleTemplate}
+          studies={data.studies}
+          study={study}
+          templates={data.scheduleTemplates}
+        />
       </section>
     );
   }
