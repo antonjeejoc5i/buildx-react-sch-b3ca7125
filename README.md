@@ -87,29 +87,45 @@ Qualified participants already exist in Kinesis / Panel Management and complete 
 - **Build booking preference and confirmation.** Create reminder preference selection, editable confirmation templates, and localized booking confirmation.
   - Participants can keep their profile default or choose email, SMS, or both without re-entering seeded contact data.
   - Confirmation includes all visits, selected-time-zone appointment times, location, enabled management links, and valid dynamic template content.
+- **Build self-service rescheduling and cancellation.** Create participant appointment management with study controls, cutoffs, limits, and multi-visit rules.
+  - Rescheduling and cancellation honor study enablement and configured cutoffs; rescheduling defaults to two participant changes and revalidates booking rules.
+  - Multi-visit changes count once and first attempt dependent date shifts; self-service cancellation requires confirmation and cancels the complete study participation.
 - **Build waitlist and promotion.** Create full-slot waitlist enrollment and FIFO local promotion with revalidation.
   - Eligible participants can join an enabled waitlist for a full slot without treating backup slots as waitlist entries.
   - When capacity opens, FIFO entries are rechecked against eligibility, quotas, and restrictions; only valid entries become bookings and receive a local promotion notification.
+- **Build reminder and event notification configuration.** Create per-study reminder cadence and event template settings, plus local reminder and notification record generation.
+  - Researchers can add, edit, and remove reminder timings and templates; due reminders are skipped at booking time.
+  - Cancellation removes future reminders, rescheduling regenerates them, and reschedule, cancellation, and waitlist promotion create event previews for affected visits.
+- **Build local notification outbox.** Create simulated email/SMS outbox previews, delivery events, and delivery-failure review.
+  - Outbox previews reflect booked channels and create no real delivery, network call, or background work.
+  - Simulated delivery failures are stored and visibly flagged without silently changing channels.
 - **Build recruitment dashboard.** Create the per-study local recruitment dashboard and scoped drill-downs.
   - Dashboard shows quota progress, scheduled participants and slots, cancellations, no-shows, segment slot fill, and quota/slot/participant drill-downs.
   - All metrics are visibly labelled as local demonstration calculations and inaccessible scopes remain hidden.
+- **Build researcher booking operations and audit.** Create authorised researcher-assisted booking, rescheduling, cancellation, restriction overrides, and local audit records.
+  - Authorised researchers can operate only within simulated scope and normal booking rules apply before any override.
+  - Overrides require warning acknowledgement and a reason; local audit events store actor, timestamp, action, entity references, before/after values, and reason.
 - **Build reception and facility operations views.** Create day-of check-in/no-show operations and facility upcoming-study planning views.
   - Reception and field users see only authorized facility and room appointments with minimum participant data and can check in or mark no-shows with an affects-standing placeholder.
   - Field managers can filter authorized upcoming studies by facility, date range, study, and room.
+- **Build local reporting metrics.** Create reusable calculations for fill rate, no-show rate, recruitment status, and time-to-fill.
+  - Fill rate remains separate from attendance; no-show rate excludes cancelled, rescheduled-away, and future appointments.
+  - Time-to-fill runs from opening until original quota targets are met and does not extend for over-target bookings; all metrics carry local-data disclosure.
+- **Build reports, exports, and upcoming appointments list.** Create recruitment reporting, scoped CSV/Excel-compatible exports, and filterable future appointment table/list.
+  - Recruitment reports use dashboard calculations and export current filtered or all in-scope local records with local-data disclosure.
+  - Future appointments support researcher, study, facility, and date-range filters, respect scope, and provide accessible empty states without requiring a calendar view.
+- **Make participant screens responsive and accessible.** Enhance participant booking and management components using existing design-system tokens and WCAG 2.1 AA practices.
+  - Participant flows work at mobile widths, zoom, and keyboard-only navigation with visible focus.
+  - Controls, validation, live updates, statuses, and slot availability have accessible names and non-colour-only indicators.
+- **Add automated unit and UI coverage.** Expand Vitest coverage across local domain rules, persistence, role views, error states, and key feature workflows.
+  - Tests cover eligibility, quotas, overbooking, intervals, daylight saving, persistence, roles, empty/error states, schedules, waitlists, language, accessibility, and local-data workflows.
+  - Lint, typecheck, build, and test commands pass without network services or real personal data.
 
 ## Not finished yet
 
 These planned stories did not pass BuildX's checks, so they are not in the code:
 
-- Build self-service rescheduling and cancellation
-- Build reminder and event notification configuration
-- Build local notification outbox
-- Build researcher booking operations and audit
 - Build bulk booking operations
-- Build local reporting metrics
-- Build reports, exports, and upcoming appointments list
-- Make participant screens responsive and accessible
-- Add automated unit and UI coverage
 - Run end-to-end local scheduling journeys
 
 ## Tech stack
@@ -124,12 +140,13 @@ These planned stories did not pass BuildX's checks, so they are not in the code:
   workflows/ (1 file)
 docs/ (1 file)
 public/ (1 file)
-src/ (107 files)
+src/ (132 files)
   design-system/ (3 files)
   domain/ (2 files)
-  features/ (94 files)
+  features/ (118 files)
   fixtures/ (1 file)
   infrastructure/ (3 files)
+  test/ (1 file)
 .dockerignore
 .env.example
 .gitignore
@@ -180,14 +197,17 @@ Use its variables for colours, fonts, font sizes, spacing and corners. Do not wr
 - `index.html`: Provides browser metadata for the static scheduling demo.
 - `package.json`: Scaffold json file
 - `package-lock.json`: Scaffold json file
-- `src/App.tsx`: Composes the simulated Decipher handoff route into the local demo application.
+- `src/App.tsx`: Wires the local notification outbox into the browser-only demonstration.
 - `src/domain/models.ts`: Defines scheduling domain models, including consecutive-visit interval rules for multi-visit studies.
-- `src/domain/repositories.ts`: Defines the repository interfaces used by scheduling UI state.
+- `src/domain/repositories.ts`: Scaffold ts file
+- `src/features/appointment-management/AppointmentManagement.css`: Scaffold css file
+- `src/features/appointment-management/appointmentManagementData.ts`: Scaffold ts file
+- `src/features/appointment-management/AppointmentManagement.tsx`: Scaffold tsx file
 - `src/features/app-shell/ActorContext.ts`: Defines the current simulated actor context.
 - `src/features/app-shell/ActorProvider.tsx`: Provides local selection and lookup of the simulated actor.
 - `src/features/app-shell/AppShell.css`: Styles the responsive application shell using design-system tokens.
-- `src/features/app-shell/AppShell.tsx`: Scaffold tsx file
-- `src/features/app-shell/routes.ts`: Defines hash routes and simulated facility and study scope authorization.
+- `src/features/app-shell/AppShell.tsx`: Wires the scoped reports and appointments feature into the application shell.
+- `src/features/app-shell/routes.ts`: Adds the authorised reports and appointments route to application navigation.
 - `src/features/app-shell/useCurrentActor.ts`: Exposes the selected simulated actor to application features.
 - `src/features/booking-confirmation/BookingConfirmation.css`: Styles the confirmation content using design-system tokens.
 - `src/features/booking-confirmation/bookingConfirmationData.ts`: Builds validated localized booking confirmations and resolves participant reminder delivery preferences.
@@ -196,13 +216,13 @@ Use its variables for colours, fonts, font sizes, spacing and corners. Do not wr
 - `src/features/booking-confirmation/ConfirmationTemplateEditor.tsx`: Provides the study-scoped editor for confirmation template content and management-link settings.
 - `src/features/booking-flow/BookingFlow.css`: Styles the booking flow using design-system tokens.
 - `src/features/booking-flow/bookingFlowData.ts`: Evaluates participant booking eligibility, capacity, quota, and visit interval rules.
-- `src/features/booking-flow/BookingFlow.tsx`: Renders the visit-by-visit local hold, review, and revalidation booking flow.
-- `src/features/decipher-handoff/DecipherHandoff.css`: Styles the local Decipher handoff using existing design-system tokens.
+- `src/features/booking-flow/BookingFlow.tsx`: Renders accessible, explicitly named available-slot controls in the participant booking flow.
+- `src/features/decipher-handoff/DecipherHandoff.css`: Uses valid design-system spacing tokens for responsive participant handoff cards.
 - `src/features/decipher-handoff/decipherHandoffData.ts`: Resolves local Decipher handoff eligibility and provides localized display copy.
-- `src/features/decipher-handoff/DecipherHandoffRoute.tsx`: Supplies the local waitlist persistence action to participant handoff routes.
-- `src/features/decipher-handoff/DecipherHandoff.tsx`: Wires participant waitlist enrollment into the local Decipher handoff flow.
-- `src/features/demo-state/DemoStateContext.ts`: Adds the optional local waitlist persistence action to demo state.
-- `src/features/demo-state/DemoStateProvider.tsx`: Persists newly created local waitlist records through the existing repository boundary.
+- `src/features/decipher-handoff/DecipherHandoffRoute.tsx`: Scaffold tsx file
+- `src/features/decipher-handoff/DecipherHandoff.tsx`: Scaffold tsx file
+- `src/features/demo-state/DemoStateContext.ts`: Scaffold ts file
+- `src/features/demo-state/DemoStateProvider.tsx`: Scaffold tsx file
 - `src/features/demo-state/useDemoState.ts`: Provides feature components with access to the demo state boundary.
 - `src/features/facility-management/FacilityManagement.css`: Styles the facility management feature using design-system tokens.
 - `src/features/facility-management/facilityManagementData.ts`: Builds and validates locally controlled facility and room records.
@@ -214,10 +234,7 @@ Use its variables for colours, fonts, font sizes, spacing and corners. Do not wr
 - `src/features/local-data/lifecycleData.ts`: Validates and persists local JSON export, import, reset, and clear operations.
 - `src/features/local-data/LocalDataControls.css`: Styles the local-data controls using design-system tokens.
 - `src/features/local-data/LocalDataControls.tsx`: Renders local-data lifecycle controls and safely reads uploaded JSON before importing it.
-- `src/features/multi-visit-configuration/multiVisitConfigurationData.ts`: Validates multi-visit interval rules and groups visit-specific schedules and overrides.
-- `src/features/participant-presentation/ParticipantPresentation.css`: Styles participant language and time-zone controls with design-system tokens.
-- `src/features/participant-presentation/participantPresentationData.ts`: Defines supported participant languages, localized copy, and locale-aware formatting.
-- and 31 more
+- and 45 more
 
 ## Commands
 
