@@ -1,0 +1,104 @@
+import { useState } from "react";
+import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
+import {
+  formatHandoffTime,
+  getHandoffCopy,
+  resolveHandoff,
+} from "./decipherHandoffData.ts";
+import "./DecipherHandoff.css";
+
+interface DecipherHandoffProps {
+  data: DemoFixtures;
+  participantId: string;
+  projectId: string;
+}
+
+export default function DecipherHandoff({
+  data,
+  participantId,
+  projectId,
+}: DecipherHandoffProps) {
+  const [showSlots, setShowSlots] = useState(false);
+  const result = resolveHandoff(
+    data.studies,
+    data.participants,
+    data.bookings,
+    data.slots,
+    projectId,
+    participantId,
+  );
+
+  if (result.kind === "denied") {
+    return (
+      <main className="decipher-handoff__denial" role="alert">
+        <h1>{result.title}</h1>
+        <p>{result.message}</p>
+      </main>
+    );
+  }
+
+  const copy = getHandoffCopy(result.participant.language);
+  if (result.kind === "existing-booking") {
+    return (
+      <main className="decipher-handoff" aria-labelledby="handoff-heading">
+        <p className="decipher-handoff__eyebrow">{result.study.name}</p>
+        <h1 id="handoff-heading">{copy.existingAppointment}</h1>
+        <p>{copy.existingMessage}</p>
+        {result.slot === undefined ? null : (
+          <dl>
+            <div>
+              <dt>{copy.visit}</dt>
+              <dd>
+                {formatHandoffTime(
+                  result.slot.startsAtUtc,
+                  result.participant.language,
+                  result.participant.timeZone,
+                )}
+              </dd>
+            </div>
+          </dl>
+        )}
+      </main>
+    );
+  }
+
+  const slots = data.slots.filter(
+    (slot) => slot.studyId === result.study.id && slot.status === "primary",
+  );
+  return (
+    <main className="decipher-handoff" aria-labelledby="handoff-heading">
+      <p className="decipher-handoff__eyebrow">{copy.summary}</p>
+      <h1 id="handoff-heading">{result.study.name}</h1>
+      <p>{result.study.description}</p>
+      <dl>
+        <div>
+          <dt>{copy.visit}</dt>
+          <dd>{result.study.visits.map((visit) => visit.name).join(", ")}</dd>
+        </div>
+      </dl>
+      {showSlots ? (
+        <section
+          className="decipher-handoff__slots"
+          aria-labelledby="slots-heading"
+        >
+          <h2 id="slots-heading">{copy.selectSlot}</h2>
+          <ul>
+            {slots.map((slot) => (
+              <li key={slot.id}>
+                {formatHandoffTime(
+                  slot.startsAtUtc,
+                  result.participant.language,
+                  result.participant.timeZone,
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        <button type="button" onClick={() => setShowSlots(true)}>
+          {copy.continue}
+        </button>
+      )}
+    </main>
+  );
+}

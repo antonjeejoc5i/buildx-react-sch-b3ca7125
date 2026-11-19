@@ -1,0 +1,94 @@
+.decipher-handoff,
+.decipher-handoff__denial {
+  background-color: var(--component-surface-card-bg);
+  border: 1px solid var(--component-surface-card-border);
+  border-radius: var(--primitives-radius-lg);
+  display: grid;
+  gap: var(--primitives-spacing-4);
+  margin: var(--primitives-spacing-6) auto;
+  max-width: var(--primitives-spacing-64);
+  padding: var(--primitives-spacing-6);
+}
+
+.decipher-handoff__denial {
+  border-color: var(--semantic-color-status-error);
+}
+
+.decipher-handoff h1,
+.decipher-handoff__denial h1,
+.decipher-handoff h2,
+.decipher-handoff p,
+.decipher-handoff__denial p {
+  margin: 0;
+}
+
+.decipher-handoff h1,
+.decipher-handoff__denial h1 {
+  color: var(--semantic-color-text-default-primary);
+  font-size: var(--primitives-type-font-size-title-large);
+  line-height: var(--primitives-type-line-height-title-large);
+}
+
+.decipher-handoff h2 {
+  color: var(--semantic-color-text-default-primary);
+  font-size: var(--primitives-type-font-size-title-medium);
+  line-height: var(--primitives-type-line-height-title-medium);
+}
+
+.decipher-handoff p,
+.decipher-handoff__denial p,
+.decipher-handoff dd,
+.decipher-handoff li {
+  color: var(--semantic-color-text-default-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+
+.decipher-handoff__eyebrow,
+.decipher-handoff dt {
+  color: var(--semantic-color-text-default-subtle);
+  font-size: var(--primitives-type-font-size-caption);
+  line-height: var(--primitives-type-line-height-caption);
+}
+
+.decipher-handoff dl,
+.decipher-handoff dl div,
+.decipher-handoff__slots {
+  display: grid;
+  gap: var(--primitives-spacing-2);
+  margin: 0;
+}
+
+.decipher-handoff dd {
+  margin: 0;
+}
+
+.decipher-handoff button {
+  background-color: var(--component-button-primary-default-background);
+  border: 1px solid var(--component-button-primary-default-background);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-button-primary-default-text);
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
+  width: fit-content;
+}
+
+.decipher-handoff button:hover {
+  background-color: var(--component-button-primary-hover-background);
+  border-color: var(--component-button-primary-hover-background);
+  color: var(--component-button-primary-hover-text);
+}
+
+.decipher-handoff__slots {
+  border-top: 1px solid var(--semantic-color-border-default-primary);
+  padding-top: var(--primitives-spacing-4);
+}
+
+.decipher-handoff__slots ul {
+  display: grid;
+  gap: var(--primitives-spacing-2);
+  margin: 0;
+  padding-left: var(--primitives-spacing-5);
+}
