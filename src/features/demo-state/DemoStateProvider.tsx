@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PropsWithChildren } from "react";
 import type {
+  AuditEvent,
   Booking,
   BookingVisit,
   Facility,
+  NotificationEvent,
   Quota,
   Room,
   ScheduleOverride,
@@ -13,9 +15,9 @@ import type {
   Study,
   WaitlistEntry,
 } from "../../domain/models.ts";
+import type { SchedulingRepositories } from "../../domain/repositories.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import { demoFixtures } from "../../fixtures/demoFixtures.ts";
-import type { SchedulingRepositories } from "../../domain/repositories.ts";
 import { createSchedulingRepositories } from "../../infrastructure/schedulingRepositories.ts";
 import {
   clearLocalData,
@@ -175,6 +177,32 @@ export default function DemoStateProvider({
       }),
     [activeRepositories, updateData],
   );
+  const saveBulkBookingOperation = useCallback(
+    async (
+      bookings: Booking[],
+      bookingVisits: BookingVisit[],
+      notificationEvents: NotificationEvent[],
+      auditEvents: AuditEvent[],
+    ) =>
+      updateData(async () => {
+        await Promise.all([
+          ...bookings.map((booking) =>
+            activeRepositories.bookings.put(booking),
+          ),
+          ...bookingVisits.map((bookingVisit) =>
+            activeRepositories.bookingVisits.put(bookingVisit),
+          ),
+          ...notificationEvents.map((event) =>
+            activeRepositories.notificationEvents.put(event),
+          ),
+          ...auditEvents.map((event) =>
+            activeRepositories.auditEvents.put(event),
+          ),
+        ]);
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
   const exportData = useCallback(() => exportLocalData(data), [data]);
 
   useEffect(() => {
@@ -200,6 +228,7 @@ export default function DemoStateProvider({
       saveSlot,
       saveWaitlistEntry,
       saveBookingParticipation,
+      saveBulkBookingOperation,
       exportData,
     }),
     [
@@ -212,6 +241,7 @@ export default function DemoStateProvider({
       reload,
       resetToSeed,
       saveBookingParticipation,
+      saveBulkBookingOperation,
       saveFacility,
       saveQuota,
       saveRoom,

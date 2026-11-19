@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { DemoUser } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
+import BulkBookingOperations from "../bulk-booking-operations/BulkBookingOperations.tsx";
 import { useDemoState } from "../demo-state/useDemoState.ts";
 import FacilityManagement from "../facility-management/FacilityManagement.tsx";
 import LocalDataControls from "../local-data/LocalDataControls.tsx";
@@ -48,6 +49,7 @@ function RouteContent({
   route: Route;
 }) {
   const {
+    saveBulkBookingOperation,
     saveFacility,
     saveQuota,
     saveRoom,
@@ -100,6 +102,12 @@ function RouteContent({
           slots={data.slots}
           study={study}
           waitlistEntries={data.waitlistEntries}
+        />
+        <BulkBookingOperations
+          actor={actor}
+          data={data}
+          saveBulkBookingOperation={saveBulkBookingOperation}
+          study={study}
         />
         <ReportingMetrics
           bookingVisits={data.bookingVisits}

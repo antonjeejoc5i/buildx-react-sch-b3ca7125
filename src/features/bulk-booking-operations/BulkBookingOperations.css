@@ -1,0 +1,83 @@
+.bulk-booking-operations {
+  border-top: var(--primitives-spacing-1) solid
+    var(--component-surface-card-border);
+  color: var(--semantic-color-text-default-secondary);
+  display: grid;
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  gap: var(--primitives-spacing-4);
+  line-height: var(--primitives-type-line-height-body-medium);
+  margin-top: var(--primitives-spacing-6);
+  padding-top: var(--primitives-spacing-6);
+}
+
+.bulk-booking-operations h2,
+.bulk-booking-operations h3 {
+  color: var(--semantic-color-text-default-primary);
+  font-family: var(--primitives-type-font-family-primary);
+  margin: 0;
+}
+
+.bulk-booking-operations h2 {
+  font-size: var(--primitives-type-font-size-title-large);
+  line-height: var(--primitives-type-line-height-title-large);
+}
+
+.bulk-booking-operations h3 {
+  font-size: var(--primitives-type-font-size-title-small);
+  line-height: var(--primitives-type-line-height-title-small);
+}
+
+.bulk-booking-operations p {
+  margin: 0;
+}
+
+.bulk-booking-operations__field,
+.bulk-booking-operations__bookings,
+.bulk-booking-operations__replacements {
+  display: grid;
+  gap: var(--primitives-spacing-2);
+}
+
+.bulk-booking-operations__bookings {
+  border: var(--primitives-spacing-1) solid
+    var(--component-input-border-default);
+  border-radius: var(--primitives-radius-md);
+  padding: var(--primitives-spacing-3);
+}
+
+.bulk-booking-operations__preview {
+  background: var(--semantic-color-background-default-subtle);
+  border-radius: var(--primitives-radius-md);
+  display: grid;
+  gap: var(--primitives-spacing-2);
+  padding: var(--primitives-spacing-4);
+}
+
+.bulk-booking-operations__preview ul {
+  color: var(--semantic-color-status-error);
+  margin: 0;
+  padding-left: var(--primitives-spacing-5);
+}
+
+.bulk-booking-operations select,
+.bulk-booking-operations button {
+  background: var(--component-button-secondary-default-background);
+  border: var(--primitives-spacing-1) solid
+    var(--component-button-secondary-default-border);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-button-secondary-default-text);
+  font: inherit;
+  padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
+}
+
+.bulk-booking-operations button:disabled,
+.bulk-booking-operations select:disabled {
+  background: var(--component-button-primary-disabled-background);
+  border-color: var(--component-button-secondary-disabled-border);
+  color: var(--component-button-primary-disabled-text);
+}
+
+.bulk-booking-operations__confirmation {
+  color: var(--semantic-color-text-default-primary);
+}

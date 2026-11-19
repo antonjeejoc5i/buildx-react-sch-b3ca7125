@@ -1,8 +1,10 @@
 import { createContext } from "react";
 import type {
+  AuditEvent,
   Booking,
   BookingVisit,
   Facility,
+  NotificationEvent,
   Quota,
   Room,
   ScheduleOverride,
@@ -34,6 +36,12 @@ export interface DemoState {
   saveBookingParticipation: (
     booking: Booking,
     bookingVisits: BookingVisit[],
+  ) => Promise<void>;
+  saveBulkBookingOperation: (
+    bookings: Booking[],
+    bookingVisits: BookingVisit[],
+    notificationEvents: NotificationEvent[],
+    auditEvents: AuditEvent[],
   ) => Promise<void>;
   exportData: () => string;
 }
