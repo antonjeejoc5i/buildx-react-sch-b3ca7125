@@ -51,31 +51,61 @@ Qualified participants already exist in Kinesis / Panel Management and complete 
 - **Build controlled facility and room data.** Create facility and room management with local controlled values, time zones, blackout dates, informational capacities, and role authorisation assignments.
   - Facilities and rooms can be maintained locally and each room belongs to a facility.
   - Room capacity is displayed as informational and never blocks a booking.
+- **Build study creation and lifecycle editor.** Create the researcher study editor for facility, room, simulated Decipher project ID, booking controls, notifications, visits, and lifecycle status.
+  - Researchers can save Draft studies and must select a facility, room, and simulated Decipher project before opening booking.
+  - Studies support Draft, Open for Booking, Paused, Closed, and Archived; non-open studies reject new participant bookings.
+- **Build recurring schedule generation.** Create schedule patterns for date ranges, weekday groups, operating windows, slot length, buffers, facility-local time, and UTC slots.
+  - Patterns generate slots from date range, weekday, time window, duration, and buffer rules, including different day groups.
+  - Slots store UTC timestamps while preserving facility operating times across daylight-saving changes; invalid schedules show validation without overwriting saved data.
+- **Build schedule overrides and blackout handling.** Create the schedule calendar and date-level override controls, including blackout exclusion and affected-booking safeguards.
+  - Overrides can change availability, time windows, slot length, buffer, and added or removed slots; blackout dates generate no availability.
+  - Calendar states identify normal, override, and blackout dates; replacing an override requires confirmation and affected bookings are shown before schedule changes finalize.
+- **Build schedule copying and templates.** Create schedule copy and reusable template controls for recurring patterns and override structures.
+  - Researchers can copy patterns and overrides from a study or facility without copying location, quotas, or bookings.
+  - Templates can be saved, edited, duplicated, archived, and applied as independent editable copies excluding location, quotas, and bookings.
+- **Build multi-visit configuration.** Create visit configuration with separate visit schedules, overrides, and consecutive-visit interval rules.
+  - Studies can require multiple visits, with schedules and overrides assigned per visit.
+  - Same-day, exact-day, and minimum-to-maximum day-window rules are supported; invalid intervals are rejected clearly.
+- **Build quota and overbooking rules.** Create combined quota configuration and calculation rules based on seeded screener and profile attributes.
+  - Researchers can configure single- and multi-dimensional quota buckets with target, filled, remaining, default overbooking, and segment override values.
+  - Booking evaluation identifies the applicable bucket and blocks booking above quota target or the whole-participant overbooking maximum.
+- **Build slot capacity and backup-slot controls.** Create independent slot-capacity calculation and backup/floater slot management.
+  - A full slot rejects booking regardless of quota or informational room capacity.
+  - Backup slots may use different durations, remain unavailable to participants until promoted, and remain separate from waitlist records.
+- **Build segment slot eligibility rules.** Create eligibility configuration and evaluator for alternating segments, restricted pools, AND/OR criteria, and per-slot overrides.
+  - Rules can use profile and screener attributes with AND/OR logic and can apply alternating and restricted-pool mechanisms together.
+  - The evaluator returns an explainable eligibility result and prevents ineligible participant availability.
+- **Build participant language and time-zone controls.** Create localized participant presentation, language selection, locale formatting, and appointment time-zone display controls.
+  - The participant UI supports English, French, German, Dutch, Flemish, Spanish, Portuguese (Brazil), and Hindi, defaulting to profile language.
+  - Dates, times, numbers, validations, confirmations, reminders, and previews are localized; display time zone can change without altering stored UTC appointments.
+- **Build simulated Decipher handoff.** Create local mock handoff routes for seeded qualified participants entering a study booking flow.
+  - Qualified participants at an Open study see a localized study summary before slot selection with no network call.
+  - Unqualified, missing-data, and closed-study participants see clear local denial states; active bookings open the existing appointment instead of a duplicate flow.
+- **Build multi-visit booking flow and local holds.** Create participant slot selection, local temporary holds, visit-by-visit selection, review, and confirmation revalidation.
+  - Only primary slots passing study state, eligibility, capacity, quota, overbooking, and interval rules are shown.
+  - Multi-visit bookings require every visit in one continuous flow; confirmation revalidates all rules and gives actionable alternatives or waitlist guidance on failure.
+- **Build booking preference and confirmation.** Create reminder preference selection, editable confirmation templates, and localized booking confirmation.
+  - Participants can keep their profile default or choose email, SMS, or both without re-entering seeded contact data.
+  - Confirmation includes all visits, selected-time-zone appointment times, location, enabled management links, and valid dynamic template content.
+- **Build waitlist and promotion.** Create full-slot waitlist enrollment and FIFO local promotion with revalidation.
+  - Eligible participants can join an enabled waitlist for a full slot without treating backup slots as waitlist entries.
+  - When capacity opens, FIFO entries are rechecked against eligibility, quotas, and restrictions; only valid entries become bookings and receive a local promotion notification.
+- **Build recruitment dashboard.** Create the per-study local recruitment dashboard and scoped drill-downs.
+  - Dashboard shows quota progress, scheduled participants and slots, cancellations, no-shows, segment slot fill, and quota/slot/participant drill-downs.
+  - All metrics are visibly labelled as local demonstration calculations and inaccessible scopes remain hidden.
+- **Build reception and facility operations views.** Create day-of check-in/no-show operations and facility upcoming-study planning views.
+  - Reception and field users see only authorized facility and room appointments with minimum participant data and can check in or mark no-shows with an affects-standing placeholder.
+  - Field managers can filter authorized upcoming studies by facility, date range, study, and room.
 
 ## Not finished yet
 
 These planned stories did not pass BuildX's checks, so they are not in the code:
 
-- Build study creation and lifecycle editor
-- Build recurring schedule generation
-- Build schedule overrides and blackout handling
-- Build schedule copying and templates
-- Build multi-visit configuration
-- Build quota and overbooking rules
-- Build slot capacity and backup-slot controls
-- Build segment slot eligibility rules
-- Build participant language and time-zone controls
-- Build simulated Decipher handoff
-- Build multi-visit booking flow and local holds
-- Build booking preference and confirmation
 - Build self-service rescheduling and cancellation
-- Build waitlist and promotion
 - Build reminder and event notification configuration
 - Build local notification outbox
-- Build recruitment dashboard
 - Build researcher booking operations and audit
 - Build bulk booking operations
-- Build reception and facility operations views
 - Build local reporting metrics
 - Build reports, exports, and upcoming appointments list
 - Make participant screens responsive and accessible
@@ -94,10 +124,10 @@ These planned stories did not pass BuildX's checks, so they are not in the code:
   workflows/ (1 file)
 docs/ (1 file)
 public/ (1 file)
-src/ (35 files)
+src/ (107 files)
   design-system/ (3 files)
   domain/ (2 files)
-  features/ (23 files)
+  features/ (94 files)
   fixtures/ (1 file)
   infrastructure/ (3 files)
 .dockerignore
@@ -150,30 +180,44 @@ Use its variables for colours, fonts, font sizes, spacing and corners. Do not wr
 - `index.html`: Provides browser metadata for the static scheduling demo.
 - `package.json`: Scaffold json file
 - `package-lock.json`: Scaffold json file
-- `src/App.tsx`: Wires the local demo state provider to the application shell.
-- `src/domain/models.ts`: Defines scheduling domain models and required participant profile validation.
+- `src/App.tsx`: Composes the simulated Decipher handoff route into the local demo application.
+- `src/domain/models.ts`: Defines scheduling domain models, including consecutive-visit interval rules for multi-visit studies.
 - `src/domain/repositories.ts`: Defines the repository interfaces used by scheduling UI state.
 - `src/features/app-shell/ActorContext.ts`: Defines the current simulated actor context.
 - `src/features/app-shell/ActorProvider.tsx`: Provides local selection and lookup of the simulated actor.
 - `src/features/app-shell/AppShell.css`: Styles the responsive application shell using design-system tokens.
-- `src/features/app-shell/AppShell.tsx`: Wires authorised facility routes to the new facility management feature.
+- `src/features/app-shell/AppShell.tsx`: Scaffold tsx file
 - `src/features/app-shell/routes.ts`: Defines hash routes and simulated facility and study scope authorization.
 - `src/features/app-shell/useCurrentActor.ts`: Exposes the selected simulated actor to application features.
-- `src/features/demo-state/DemoStateContext.ts`: Adds facility and room persistence actions to the local demo-state contract.
-- `src/features/demo-state/DemoStateProvider.tsx`: Persists locally maintained facilities and rooms through the existing IndexedDB boundary.
+- `src/features/booking-confirmation/BookingConfirmation.css`: Styles the confirmation content using design-system tokens.
+- `src/features/booking-confirmation/bookingConfirmationData.ts`: Builds validated localized booking confirmations and resolves participant reminder delivery preferences.
+- `src/features/booking-confirmation/BookingConfirmation.tsx`: Renders a participant-facing booking confirmation with all visits, location, reminders, and enabled links.
+- `src/features/booking-confirmation/ConfirmationTemplateEditor.css`: Styles the editable confirmation-template controls with design-system tokens.
+- `src/features/booking-confirmation/ConfirmationTemplateEditor.tsx`: Provides the study-scoped editor for confirmation template content and management-link settings.
+- `src/features/booking-flow/BookingFlow.css`: Styles the booking flow using design-system tokens.
+- `src/features/booking-flow/bookingFlowData.ts`: Evaluates participant booking eligibility, capacity, quota, and visit interval rules.
+- `src/features/booking-flow/BookingFlow.tsx`: Renders the visit-by-visit local hold, review, and revalidation booking flow.
+- `src/features/decipher-handoff/DecipherHandoff.css`: Styles the local Decipher handoff using existing design-system tokens.
+- `src/features/decipher-handoff/decipherHandoffData.ts`: Resolves local Decipher handoff eligibility and provides localized display copy.
+- `src/features/decipher-handoff/DecipherHandoffRoute.tsx`: Supplies the local waitlist persistence action to participant handoff routes.
+- `src/features/decipher-handoff/DecipherHandoff.tsx`: Wires participant waitlist enrollment into the local Decipher handoff flow.
+- `src/features/demo-state/DemoStateContext.ts`: Adds the optional local waitlist persistence action to demo state.
+- `src/features/demo-state/DemoStateProvider.tsx`: Persists newly created local waitlist records through the existing repository boundary.
 - `src/features/demo-state/useDemoState.ts`: Provides feature components with access to the demo state boundary.
 - `src/features/facility-management/FacilityManagement.css`: Styles the facility management feature using design-system tokens.
 - `src/features/facility-management/facilityManagementData.ts`: Builds and validates locally controlled facility and room records.
 - `src/features/facility-management/FacilityManagement.tsx`: Renders local facility details, role assignments, and facility-scoped room maintenance.
+- `src/features/facility-operations/FacilityOperations.css`: Styles facility operations screens with approved design-system tokens.
+- `src/features/facility-operations/facilityOperationsData.ts`: Builds authorized reception and facility-planning records and attendance updates.
+- `src/features/facility-operations/FacilityPlanning.tsx`: Renders field-manager filters for authorized upcoming facility studies.
+- `src/features/facility-operations/ReceptionOperations.tsx`: Renders authorized reception and field attendance operations.
 - `src/features/local-data/lifecycleData.ts`: Validates and persists local JSON export, import, reset, and clear operations.
 - `src/features/local-data/LocalDataControls.css`: Styles the local-data controls using design-system tokens.
 - `src/features/local-data/LocalDataControls.tsx`: Renders local-data lifecycle controls and safely reads uploaded JSON before importing it.
-- `src/features/welcome/WelcomeScreen.css`: Styles the welcome screen using design-system tokens.
-- `src/features/welcome/WelcomeScreen.tsx`: Renders the static browser-only demo welcome screen.
-- `src/fixtures/demoFixtures.ts`: Provides deterministic fictional scheduling records for all domain collections.
-- `src/infrastructure/indexedDbRepository.ts`: Implements validated generic persistence with the browser IndexedDB API.
-- `src/infrastructure/schedulingRepositories.ts`: Creates the complete set of named IndexedDB scheduling repositories.
-- `vite.config.ts`: Configures Vite and the jsdom environment used by component tests.
+- `src/features/multi-visit-configuration/multiVisitConfigurationData.ts`: Validates multi-visit interval rules and groups visit-specific schedules and overrides.
+- `src/features/participant-presentation/ParticipantPresentation.css`: Styles participant language and time-zone controls with design-system tokens.
+- `src/features/participant-presentation/participantPresentationData.ts`: Defines supported participant languages, localized copy, and locale-aware formatting.
+- and 31 more
 
 ## Commands
 
