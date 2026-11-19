@@ -1,0 +1,87 @@
+.schedule-overrides {
+  display: grid;
+  gap: var(--primitives-spacing-6);
+  margin: 0 auto;
+  max-width: var(--primitives-spacing-64);
+}
+.schedule-overrides header p,
+.schedule-overrides header h1,
+.schedule-overrides h2,
+.schedule-overrides h3 {
+  margin: 0;
+}
+.schedule-overrides header p {
+  color: var(--semantic-color-text-default-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+.schedule-overrides__calendar,
+.schedule-overrides__card,
+.schedule-overrides__confirmation {
+  background-color: var(--component-surface-card-bg);
+  border: 1px solid var(--component-surface-card-border);
+  border-radius: var(--primitives-radius-lg);
+  padding: var(--primitives-spacing-5);
+}
+.schedule-overrides__calendar {
+  display: grid;
+  gap: var(--primitives-spacing-2);
+}
+.schedule-overrides__card {
+  display: grid;
+  gap: var(--primitives-spacing-4);
+}
+.schedule-overrides label {
+  color: var(--component-input-label);
+  display: grid;
+  font-size: var(--primitives-type-font-size-body-medium);
+  gap: var(--primitives-spacing-1);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+.schedule-overrides input,
+.schedule-overrides select {
+  background-color: var(--component-input-background-default);
+  border: 1px solid var(--component-input-border-default);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-input-text-value);
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  padding: var(--primitives-spacing-2);
+}
+.schedule-overrides input:disabled {
+  background-color: var(--component-input-background-disabled);
+  color: var(--component-input-text-disabled);
+}
+.schedule-overrides button {
+  background-color: var(--component-button-primary-default-background);
+  border: 1px solid var(--component-button-primary-default-background);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-button-primary-default-text);
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
+  width: fit-content;
+}
+.schedule-overrides__confirmation {
+  border-color: var(--semantic-color-status-warning);
+}
+.schedule-overrides__confirmation > * + * {
+  margin-top: var(--primitives-spacing-3);
+}
+.schedule-overrides__secondary {
+  background-color: var(
+    --component-button-secondary-default-background
+  ) !important;
+  border-color: var(--component-button-secondary-default-border) !important;
+  color: var(--component-button-secondary-default-text) !important;
+  margin-left: var(--primitives-spacing-2);
+}
+.schedule-overrides__message {
+  background-color: var(--semantic-color-status-status-light-info);
+  border: 1px solid var(--semantic-color-status-info);
+  border-radius: var(--primitives-radius-md);
+  margin: 0;
+  padding: var(--primitives-spacing-3);
+}
