@@ -8,6 +8,7 @@ import type {
   ScheduleTemplate,
   Slot,
   Study,
+  WaitlistEntry,
 } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 
@@ -27,6 +28,7 @@ export interface DemoState {
   saveScheduleOverride: (override: ScheduleOverride) => Promise<void>;
   saveScheduleTemplate: (template: ScheduleTemplate) => Promise<void>;
   saveSlot: (slot: Slot) => Promise<void>;
+  saveWaitlistEntry?: (entry: WaitlistEntry) => Promise<void>;
   exportData: () => string;
 }
 

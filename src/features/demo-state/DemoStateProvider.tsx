@@ -9,6 +9,7 @@ import type {
   ScheduleTemplate,
   Slot,
   Study,
+  WaitlistEntry,
 } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import { demoFixtures } from "../../fixtures/demoFixtures.ts";
@@ -151,6 +152,14 @@ export default function DemoStateProvider({
       }),
     [activeRepositories, updateData],
   );
+  const saveWaitlistEntry = useCallback(
+    async (entry: WaitlistEntry) =>
+      updateData(async () => {
+        await activeRepositories.waitlistEntries.put(entry);
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
   const exportData = useCallback(() => exportLocalData(data), [data]);
 
   useEffect(() => {
@@ -174,6 +183,7 @@ export default function DemoStateProvider({
       saveScheduleOverride,
       saveScheduleTemplate,
       saveSlot,
+      saveWaitlistEntry,
       exportData,
     }),
     [
@@ -193,6 +203,7 @@ export default function DemoStateProvider({
       saveScheduleTemplate,
       saveSlot,
       saveStudy,
+      saveWaitlistEntry,
     ],
   );
 
