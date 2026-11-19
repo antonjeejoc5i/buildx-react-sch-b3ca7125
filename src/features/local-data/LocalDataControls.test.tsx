@@ -1,31 +1,13 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { expect, test, vi } from "vitest";
+import { createTestDemoState } from "../../test/createTestDemoState.ts";
 import { DemoStateContext } from "../demo-state/DemoStateContext.ts";
 import LocalDataControls from "./LocalDataControls.tsx";
 
 test("requires confirmation before clearing local data and states the simulation limits", () => {
   const clearData = vi.fn().mockResolvedValue(undefined);
   render(
-    <DemoStateContext.Provider
-      value={{
-        data: null,
-        error: null,
-        isLoading: false,
-        reload: vi.fn().mockResolvedValue(undefined),
-        resetToSeed: vi.fn().mockResolvedValue(undefined),
-        importData: vi.fn().mockResolvedValue(undefined),
-        clearData,
-        saveFacility: vi.fn().mockResolvedValue(undefined),
-        saveRoom: vi.fn().mockResolvedValue(undefined),
-        saveStudy: vi.fn().mockResolvedValue(undefined),
-        saveQuota: vi.fn().mockResolvedValue(undefined),
-        saveSchedulePattern: vi.fn().mockResolvedValue(undefined),
-        saveScheduleOverride: vi.fn().mockResolvedValue(undefined),
-        saveScheduleTemplate: vi.fn().mockResolvedValue(undefined),
-        saveSlot: vi.fn().mockResolvedValue(undefined),
-        exportData: vi.fn().mockReturnValue("{}"),
-      }}
-    >
+    <DemoStateContext.Provider value={createTestDemoState({ clearData })}>
       <LocalDataControls />
     </DemoStateContext.Provider>,
   );

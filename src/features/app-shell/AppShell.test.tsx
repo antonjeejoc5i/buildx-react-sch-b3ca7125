@@ -2,6 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, test } from "vitest";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import { demoFixtures } from "../../fixtures/demoFixtures.ts";
+import { createTestDemoState } from "../../test/createTestDemoState.ts";
 import { DemoStateContext } from "../demo-state/DemoStateContext.ts";
 import AppShell from "./AppShell.tsx";
 
@@ -22,24 +23,7 @@ function renderShell() {
   window.location.hash = "#/";
   render(
     <DemoStateContext.Provider
-      value={{
-        data: facilityScopedFixtures,
-        error: null,
-        isLoading: false,
-        reload: async () => undefined,
-        resetToSeed: async () => undefined,
-        importData: async () => undefined,
-        clearData: async () => undefined,
-        saveFacility: async () => undefined,
-        saveRoom: async () => undefined,
-        saveStudy: async () => undefined,
-        saveQuota: async () => undefined,
-        saveSchedulePattern: async () => undefined,
-        saveScheduleOverride: async () => undefined,
-        saveScheduleTemplate: async () => undefined,
-        saveSlot: async () => undefined,
-        exportData: () => "{}",
-      }}
+      value={createTestDemoState({ data: facilityScopedFixtures })}
     >
       <AppShell />
     </DemoStateContext.Provider>,
