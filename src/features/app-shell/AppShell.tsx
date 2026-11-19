@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import type { DemoUser } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
 import { useDemoState } from "../demo-state/useDemoState.ts";
 import FacilityManagement from "../facility-management/FacilityManagement.tsx";
 import LocalDataControls from "../local-data/LocalDataControls.tsx";
 import QuotaConfiguration from "../quota-configuration/QuotaConfiguration.tsx";
 import ReportingMetrics from "../reporting-metrics/ReportingMetrics.tsx";
+import ReportsAndAppointments from "../reports-and-appointments/ReportsAndAppointments.tsx";
 import ScheduleCopyTemplates from "../schedule-copy-templates/ScheduleCopyTemplates.tsx";
 import SlotManagement from "../slot-management/SlotManagement.tsx";
 import WelcomeScreen from "../welcome/WelcomeScreen.tsx";
@@ -36,7 +38,15 @@ function DeniedRoute() {
   );
 }
 
-function RouteContent({ data, route }: { data: DemoFixtures; route: Route }) {
+function RouteContent({
+  actor,
+  data,
+  route,
+}: {
+  actor: DemoUser;
+  data: DemoFixtures;
+  route: Route;
+}) {
   const {
     saveFacility,
     saveQuota,
@@ -49,6 +59,9 @@ function RouteContent({ data, route }: { data: DemoFixtures; route: Route }) {
   } = useDemoState();
   if (route.kind === "overview") return <WelcomeScreen />;
   if (route.kind === "localData") return <LocalDataControls />;
+  if (route.kind === "reports") {
+    return <ReportsAndAppointments actor={actor} data={data} />;
+  }
   if (route.kind === "facility") {
     const facility = data.facilities.find(
       (item) => item.id === route.facilityId,
@@ -178,7 +191,7 @@ function ScopedContent() {
         </nav>
         <main className="app-shell__content">
           {isRouteAuthorised(route, actor) ? (
-            <RouteContent data={data} route={route} />
+            <RouteContent actor={actor} data={data} route={route} />
           ) : (
             <DeniedRoute />
           )}
