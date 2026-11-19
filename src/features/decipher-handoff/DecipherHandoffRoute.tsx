@@ -9,7 +9,8 @@ function getHandoffPath(hash: string) {
 }
 
 export default function DecipherHandoffRoute() {
-  const { data, isLoading, saveWaitlistEntry } = useDemoState();
+  const { data, isLoading, saveBookingParticipation, saveWaitlistEntry } =
+    useDemoState();
   const [hash, setHash] = useState(() => window.location.hash);
 
   useEffect(() => {
@@ -25,6 +26,7 @@ export default function DecipherHandoffRoute() {
     <DecipherHandoff
       data={data}
       saveWaitlistEntry={saveWaitlistEntry}
+      saveParticipation={saveBookingParticipation}
       {...handoffPath}
     />
   );

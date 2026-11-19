@@ -1,0 +1,65 @@
+.appointment-management {
+  border-top: var(--primitives-spacing-1) solid
+    var(--component-surface-card-border);
+  color: var(--semantic-color-text-default-secondary);
+  display: grid;
+  font-family: var(--primitives-type-font-family-secondary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  gap: var(--primitives-spacing-4);
+  line-height: var(--primitives-type-line-height-body-medium);
+  margin-top: var(--primitives-spacing-6);
+  padding-top: var(--primitives-spacing-6);
+}
+
+.appointment-management h2 {
+  color: var(--semantic-color-text-default-primary);
+  font-family: var(--primitives-type-font-family-primary);
+  font-size: var(--primitives-type-font-size-title-large);
+  line-height: var(--primitives-type-line-height-title-large);
+  margin: 0;
+}
+
+.appointment-management__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--primitives-spacing-3);
+}
+
+.appointment-management__actions > div {
+  display: grid;
+  gap: var(--primitives-spacing-2);
+}
+
+.appointment-management__actions p {
+  margin: 0;
+}
+
+.appointment-management button,
+.appointment-management select {
+  background: var(--component-button-secondary-default-background);
+  border: var(--primitives-spacing-1) solid
+    var(--component-button-secondary-default-border);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-button-secondary-default-text);
+  font: inherit;
+  padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
+}
+
+.appointment-management button:disabled {
+  background: var(--component-button-primary-disabled-background);
+  border-color: var(--component-button-secondary-disabled-border);
+  color: var(--component-button-primary-disabled-text);
+}
+
+.appointment-management__field {
+  display: grid;
+  gap: var(--primitives-spacing-2);
+  margin-bottom: var(--primitives-spacing-4);
+}
+
+.appointment-management__confirmation {
+  background: var(--semantic-color-status-status-light-warning);
+  border-radius: var(--primitives-radius-md);
+  color: var(--semantic-color-text-default-primary);
+  padding: var(--primitives-spacing-4);
+}
