@@ -1,1 +1,8 @@
 /* App-wide styles. Colours, fonts and sizes come from the design system. */
+
+/* Form controls fill their grid cell and may shrink below their intrinsic width, so narrow screens never overflow. */
+:where(input, select, textarea) {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+}

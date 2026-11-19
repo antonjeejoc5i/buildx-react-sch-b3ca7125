@@ -120,7 +120,7 @@ export default function ScheduleOverrides({
     >
       <header>
         <p>Schedule calendar</p>
-        <h1 id="schedule-overrides-heading">Date overrides</h1>
+        <h2 id="schedule-overrides-heading">Date overrides</h2>
         <p>
           Normal dates use the recurring schedule. Blackout dates have no
           availability.
@@ -242,7 +242,7 @@ export default function ScheduleOverrides({
           className="schedule-overrides__confirmation"
           role="dialog"
         >
-          <h2 id="override-confirm-heading">Confirm schedule change</h2>
+          <h3 id="override-confirm-heading">Confirm schedule change</h3>
           {existingOverride !== undefined ? (
             <p>This date already has an override. Confirm to replace it.</p>
           ) : null}
@@ -251,7 +251,7 @@ export default function ScheduleOverrides({
               ? "This date will have no availability."
               : "Availability will use this date-level override."}
           </p>
-          <h3>Affected bookings</h3>
+          <h4>Affected bookings</h4>
           {affectedNames?.length === 0 ? (
             <p>No bookings are affected.</p>
           ) : (

@@ -1,8 +1,6 @@
 .facility-management {
   display: grid;
   gap: var(--primitives-spacing-6);
-  margin: 0 auto;
-  max-width: var(--primitives-spacing-64);
 }
 .facility-management header p,
 .facility-management header h1,
@@ -42,7 +40,7 @@
   border: 1px solid var(--component-input-border-default);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-input-text-value);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-2);
@@ -66,7 +64,7 @@
   border: 1px solid var(--component-button-primary-default-background);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-button-primary-default-text);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
@@ -86,4 +84,20 @@
   color: var(--semantic-color-text-default-primary);
   margin: 0;
   padding: var(--primitives-spacing-3);
+}
+
+/* Layout: the facility form and its rooms sit side by side. */
+.facility-management {
+  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.facility-management > header {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1100px) {
+  .facility-management {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

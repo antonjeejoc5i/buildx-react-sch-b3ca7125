@@ -14,7 +14,34 @@ import {
   evaluateBookingPlan,
   type BookingRuleFailure,
 } from "./bookingFlowData.ts";
+import BookingConfirmation from "../booking-confirmation/BookingConfirmation.tsx";
+import {
+  buildBookingConfirmation,
+  type BookingConfirmationDetails,
+} from "../booking-confirmation/bookingConfirmationData.ts";
 import "./BookingFlow.css";
+
+/** SCH-024 confirmation details, or null when the study's location cannot be resolved locally. */
+function buildConfirmationOrNull(
+  data: DemoFixtures,
+  study: Study,
+  participant: Participant,
+  selectedSlotByVisit: Record<string, string>,
+): BookingConfirmationDetails | null {
+  try {
+    return buildBookingConfirmation(
+      study,
+      participant,
+      data.facilities.find((item) => item.id === study.facilityId),
+      data.rooms.find((item) => item.id === study.roomId),
+      data.slots,
+      selectedSlotByVisit,
+      "profile-default",
+    );
+  } catch {
+    return null;
+  }
+}
 
 interface BookingFlowProps {
   data: DemoFixtures;
@@ -88,6 +115,14 @@ export default function BookingFlow({
   }
 
   if (confirmed) {
+    const confirmation = buildConfirmationOrNull(
+      data,
+      study,
+      participant,
+      selectedSlotByVisit,
+    );
+    if (confirmation !== null)
+      return <BookingConfirmation confirmation={confirmation} />;
     return (
       <section
         aria-labelledby="booking-confirmed-heading"

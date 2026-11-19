@@ -1,9 +1,9 @@
 .appointment-management {
-  border-top: var(--primitives-spacing-1) solid
+  border-top: 1px solid
     var(--component-surface-card-border);
   color: var(--semantic-color-text-default-secondary);
   display: grid;
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   gap: var(--primitives-spacing-4);
   line-height: var(--primitives-type-line-height-body-medium);
@@ -13,7 +13,9 @@
 
 .appointment-management h2 {
   color: var(--semantic-color-text-default-primary);
-  font-family: var(--primitives-type-font-family-primary);
+  font-family:
+    var(--primitives-type-font-family-primary),
+    var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-title-large);
   line-height: var(--primitives-type-line-height-title-large);
   margin: 0;
@@ -37,7 +39,7 @@
 .appointment-management button,
 .appointment-management select {
   background: var(--component-button-secondary-default-background);
-  border: var(--primitives-spacing-1) solid
+  border: 1px solid
     var(--component-button-secondary-default-border);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-button-secondary-default-text);

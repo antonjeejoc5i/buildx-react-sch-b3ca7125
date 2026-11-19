@@ -1,6 +1,10 @@
+/* ---------- Frame ---------- */
+
 .app-shell {
-  min-height: 100vh;
   background-color: var(--semantic-color-background-default-secondary);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
 }
 
 .app-shell__header {
@@ -9,7 +13,17 @@
   display: flex;
   gap: var(--primitives-spacing-4);
   justify-content: space-between;
-  padding: var(--primitives-spacing-4) var(--primitives-spacing-6);
+  padding: var(--primitives-spacing-3) var(--primitives-spacing-6);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.app-shell__brand-group {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--primitives-spacing-3);
 }
 
 .app-shell__brand {
@@ -19,20 +33,32 @@
   text-decoration: none;
 }
 
+.demo-mode-badge {
+  background-color: var(--component-badges-warning-background);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-badges-warning-text);
+  font-size: var(--primitives-type-font-size-caption);
+  line-height: var(--primitives-type-line-height-caption);
+  padding: var(--primitives-spacing-1) var(--primitives-spacing-2);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .app-shell__actor-label {
+  align-items: center;
   color: var(--component-nav-item-text);
-  display: grid;
+  display: flex;
   font-size: var(--primitives-type-font-size-body-small);
-  gap: var(--primitives-spacing-1);
+  gap: var(--primitives-spacing-2);
   line-height: var(--primitives-type-line-height-body-small);
 }
 
-.app-shell select {
+.app-shell__header select {
   background-color: var(--component-dropdown-background-default);
   border: 1px solid var(--component-dropdown-border-default);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-dropdown-option-text-default);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-1) var(--primitives-spacing-2);
@@ -40,60 +66,299 @@
 
 .app-shell__body {
   display: grid;
-  grid-template-columns:
-    minmax(var(--primitives-spacing-40), var(--primitives-spacing-48))
-    1fr;
+  grid-template-columns: var(--primitives-spacing-56) minmax(0, 1fr);
 }
+
+/* ---------- Navigation ---------- */
 
 .app-shell__navigation {
   background-color: var(--component-nav-sidebar-bg);
-  min-height: 100vh;
-  padding: var(--primitives-spacing-6);
+  box-sizing: border-box;
+  padding: var(--primitives-spacing-5) var(--primitives-spacing-4);
+}
+
+.app-shell__actor-summary {
+  border-bottom: 1px solid var(--component-nav-item-hover-bg);
+  color: var(--component-nav-item-text);
+  font-size: var(--primitives-type-font-size-body-small);
+  line-height: var(--primitives-type-line-height-body-small);
+  margin: 0 0 var(--primitives-spacing-4);
+  padding: 0 var(--primitives-spacing-3) var(--primitives-spacing-4);
+}
+
+.app-shell__nav-group + .app-shell__nav-group {
+  margin-top: var(--primitives-spacing-5);
+}
+
+.app-shell__nav-group-label {
+  color: var(--semantic-color-text-brand-subtle);
+  font-size: var(--primitives-type-font-size-caption);
+  line-height: var(--primitives-type-line-height-caption);
+  margin: 0 0 var(--primitives-spacing-2);
+  padding: 0 var(--primitives-spacing-3);
+  text-transform: uppercase;
 }
 
 .app-shell__navigation ul {
+  display: grid;
+  gap: var(--primitives-spacing-1);
   list-style: none;
-  margin: var(--primitives-spacing-4) 0 0;
+  margin: 0;
   padding: 0;
-}
-
-.app-shell__navigation li + li {
-  margin-top: var(--primitives-spacing-2);
 }
 
 .app-shell__navigation a {
   border-radius: var(--primitives-radius-sm);
   color: var(--component-nav-item-text);
   display: block;
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
   text-decoration: none;
 }
 
-.app-shell__navigation a:hover,
+.app-shell__navigation a:hover {
+  background-color: var(--component-nav-item-hover-bg);
+}
+
 .app-shell__navigation a[aria-current="page"] {
   background-color: var(--component-nav-item-active-bg);
   color: var(--component-nav-item-active-text);
 }
 
-.app-shell__actor-summary {
-  color: var(--component-nav-item-text);
+/* ---------- Content ---------- */
+
+.app-shell__content {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: var(--primitives-spacing-7);
+}
+
+/* One page width for every route. Spacing-64 is the largest token, so the width is a multiple of it. */
+.app-shell__content > * {
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: calc(var(--primitives-spacing-64) * 5);
+}
+
+.app-shell__page {
+  display: grid;
+  gap: var(--primitives-spacing-6);
+}
+
+/* App type scale. :where() keeps it at zero specificity so each feature's own sizes still apply. */
+:where(.app-shell__content) h1 {
+  font-size: var(--primitives-type-font-size-heading-6);
+  line-height: var(--primitives-type-line-height-heading-6);
+}
+
+:where(.app-shell__content) h2 {
+  font-size: var(--primitives-type-font-size-title-large);
+  line-height: var(--primitives-type-line-height-title-large);
+}
+
+:where(.app-shell__content) h3 {
+  font-size: var(--primitives-type-font-size-title-small);
+  line-height: var(--primitives-type-line-height-title-small);
+}
+
+:where(.app-shell__content) h4 {
+  font-size: var(--primitives-type-font-size-body-large);
+  line-height: var(--primitives-type-line-height-body-large);
+}
+
+:where(.app-shell__content) :is(h1, h2, h3, h4) {
+  margin: 0;
+}
+
+.app-shell__page-header {
+  display: grid;
+  gap: var(--primitives-spacing-2);
+}
+
+.app-shell__eyebrow {
+  color: var(--semantic-color-text-brand-primary);
   font-size: var(--primitives-type-font-size-body-small);
   line-height: var(--primitives-type-line-height-body-small);
   margin: 0;
 }
 
-.app-shell__content {
-  padding: var(--primitives-spacing-6);
+.app-shell__lede {
+  color: var(--semantic-color-text-default-secondary);
+  font-size: var(--primitives-type-font-size-body-large);
+  line-height: var(--primitives-type-line-height-body-large);
+  margin: 0;
 }
 
-.app-shell__loading,
-.app-shell__denial,
-.app-shell__detail {
+.app-shell__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--primitives-spacing-3) var(--primitives-spacing-7);
+  margin: var(--primitives-spacing-3) 0 0;
+}
+
+.app-shell__facts div {
+  display: grid;
+  gap: var(--primitives-spacing-1);
+}
+
+.app-shell__facts dt {
+  color: var(--semantic-color-text-default-subtle);
+  font-size: var(--primitives-type-font-size-caption);
+  line-height: var(--primitives-type-line-height-caption);
+}
+
+.app-shell__facts dd {
+  color: var(--semantic-color-text-default-primary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  margin: 0;
+}
+
+.app-shell__badge {
+  border-radius: var(--primitives-radius-sm);
+  display: inline-block;
+  font-size: var(--primitives-type-font-size-caption);
+  line-height: var(--primitives-type-line-height-caption);
+  padding: var(--primitives-spacing-1) var(--primitives-spacing-2);
+  text-transform: capitalize;
+}
+
+.app-shell__badge--success {
+  background-color: var(--component-badges-success-background);
+  color: var(--component-badges-success-text);
+}
+
+.app-shell__badge--neutral {
+  background-color: var(--component-badges-grey-background);
+  color: var(--component-badges-grey-text);
+}
+
+/* Section switcher: sticks under the header while the study page scrolls. */
+.app-shell__section-nav {
+  background-color: var(--semantic-color-background-default-secondary);
+  border-bottom: 1px solid var(--semantic-color-border-default-primary);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--primitives-spacing-1);
+  padding: var(--primitives-spacing-2) 0;
+  position: sticky;
+  top: var(--primitives-spacing-16);
+  z-index: 1;
+}
+
+.app-shell__section-nav button {
+  background-color: var(--component-button-subtle-default-background);
+  border: 1px solid var(--semantic-color-border-default-primary);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-button-subtle-default-text);
+  cursor: pointer;
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
+  font-size: var(--primitives-type-font-size-body-small);
+  line-height: var(--primitives-type-line-height-body-small);
+  padding: var(--primitives-spacing-1) var(--primitives-spacing-3);
+}
+
+.app-shell__section-nav button:hover {
+  background-color: var(--component-button-secondary-selected-background);
+  border-color: var(--component-button-secondary-selected-border);
+  color: var(--component-button-secondary-selected-text);
+}
+
+/* A white card holding one area of a page. The stacked variant divides several features with a rule. */
+.app-shell__panel {
   background-color: var(--component-surface-card-bg);
   border: 1px solid var(--component-surface-card-border);
   border-radius: var(--primitives-radius-lg);
-  margin: 0 auto;
-  max-width: var(--primitives-spacing-64);
+  box-sizing: border-box;
+  display: grid;
+  gap: var(--primitives-spacing-4);
+  min-width: 0;
+  padding: var(--primitives-spacing-6);
+  scroll-margin-top: calc(var(--primitives-spacing-16) + var(--primitives-spacing-12));
+}
+
+.app-shell__panel--stacked {
+  gap: var(--primitives-spacing-7);
+}
+
+.app-shell__panel--stacked > * + * {
+  border-top: 1px solid var(--component-table-row-border);
+  padding-top: var(--primitives-spacing-7);
+}
+
+.app-shell__card-grid {
+  display: grid;
+  gap: var(--primitives-spacing-6);
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, calc(var(--primitives-spacing-64) + var(--primitives-spacing-16))), 1fr)
+  );
+}
+
+.app-shell__card-grid > .app-shell__panel {
+  align-content: start;
+}
+
+.app-shell__link-list {
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-shell__link-list li {
+  align-items: center;
+  border-bottom: 1px solid var(--component-table-row-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--primitives-spacing-2) var(--primitives-spacing-4);
+  justify-content: space-between;
+  padding: var(--primitives-spacing-3) 0;
+}
+
+.app-shell__link-list li:last-child {
+  border-bottom: 0;
+}
+
+.app-shell__link-list a {
+  color: var(--semantic-color-text-brand-primary);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+
+.app-shell__muted,
+.app-shell__empty {
+  color: var(--semantic-color-text-default-subtle);
+  font-size: var(--primitives-type-font-size-body-small);
+  line-height: var(--primitives-type-line-height-body-small);
+  margin: 0;
+}
+
+.app-shell__empty {
+  background-color: var(--semantic-color-background-default-secondary);
+  border-radius: var(--primitives-radius-md);
+  padding: var(--primitives-spacing-4);
+}
+
+.app-shell__handoff-group {
+  display: grid;
+  gap: var(--primitives-spacing-2);
+}
+
+/* ---------- States ---------- */
+
+.app-shell__loading,
+.app-shell__denial {
+  background-color: var(--component-surface-card-bg);
+  border: 1px solid var(--component-surface-card-border);
+  border-radius: var(--primitives-radius-lg);
+  box-sizing: border-box;
+  display: grid;
+  gap: var(--primitives-spacing-3);
+  margin: var(--primitives-spacing-7) auto;
+  max-width: calc(var(--primitives-spacing-64) * 2);
   padding: var(--primitives-spacing-6);
 }
 
@@ -101,40 +366,62 @@
   border-color: var(--semantic-color-status-error);
 }
 
-.app-shell__denial h1,
-.app-shell__detail h1 {
+.app-shell__denial h1 {
+  font-size: var(--primitives-type-font-size-title-large);
+  line-height: var(--primitives-type-line-height-title-large);
   margin: 0;
 }
 
-.app-shell__denial p,
-.app-shell__detail p,
-.app-shell__detail span {
+.app-shell__denial p {
   color: var(--semantic-color-text-default-secondary);
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
+  margin: 0;
 }
 
 .app-shell__denial a {
   color: var(--semantic-color-text-brand-primary);
 }
 
-@media (max-width: 700px) {
-  .app-shell__header,
-  .app-shell__body {
-    display: block;
+/* ---------- Small screens ---------- */
+
+@media (max-width: 900px) {
+  .app-shell__header {
+    flex-wrap: wrap;
+    padding: var(--primitives-spacing-3) var(--primitives-spacing-4);
+    position: static;
   }
 
-  .app-shell__header,
-  .app-shell__navigation,
+  .app-shell__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell__navigation {
+    padding: var(--primitives-spacing-3) var(--primitives-spacing-4);
+  }
+
+  .app-shell__nav-group {
+    display: contents;
+  }
+
+  .app-shell__nav-group-label {
+    display: none;
+  }
+
+  .app-shell__navigation ul {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   .app-shell__content {
     padding: var(--primitives-spacing-4);
   }
 
-  .app-shell__actor-label {
-    margin-top: var(--primitives-spacing-3);
+  .app-shell__panel {
+    padding: var(--primitives-spacing-4);
   }
 
-  .app-shell__navigation {
-    min-height: auto;
+  .app-shell__section-nav {
+    top: 0;
   }
 }

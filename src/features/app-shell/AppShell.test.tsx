@@ -57,3 +57,66 @@ test("announces denial for a direct route outside the selected actor scope", () 
   fireEvent(window, new Event("hashchange"));
   expect(screen.getByRole("alert").textContent).toContain("Access denied");
 });
+
+function goTo(hash: string) {
+  window.location.hash = hash;
+  fireEvent(window, new Event("hashchange"));
+}
+
+test("links the overview to scoped studies and simulated participant handoffs", () => {
+  renderShell();
+  expect(
+    screen
+      .getByRole("link", { name: "Open study: Morning Routines Research" })
+      .getAttribute("href"),
+  ).toBe("#/studies/study-morning-routines");
+  expect(
+    screen
+      .getByRole("link", { name: "Continue as Quinn Patel" })
+      .getAttribute("href"),
+  ).toBe("#/handoff/DCP-DEMO-2048/participant-quinn-patel");
+});
+
+test("mounts every study configuration area on the study page", () => {
+  renderShell();
+  goTo("#/studies/study-morning-routines");
+  for (const name of [
+    "Morning Routines Research",
+    "Study setup",
+    "Date overrides",
+    "Copy schedules and templates",
+    "Quota configuration",
+    "Slot capacity and backup slots",
+    "Bulk booking operations",
+    "Booking confirmation",
+    "Notification outbox",
+    "Reporting metrics",
+  ]) {
+    expect(screen.getByRole("heading", { name })).toBeTruthy();
+  }
+  expect(
+    screen.getAllByRole("heading", { level: 1 }).map((item) => item.textContent),
+  ).toEqual(["Morning Routines Research"]);
+  expect(screen.getByRole("navigation", { name: "Study sections" })).toBeTruthy();
+});
+
+test("routes the demo tools and shows facility planning", () => {
+  renderShell();
+  goTo("#/outbox");
+  expect(screen.getByRole("heading", { name: "Notification outbox" })).toBeTruthy();
+  goTo("#/participant-preview");
+  expect(
+    screen.getByRole("heading", { name: "Your appointment preferences" }),
+  ).toBeTruthy();
+  goTo("#/facilities/facility-harbor");
+  expect(
+    screen.getByRole("heading", { name: "Upcoming study planning" }),
+  ).toBeTruthy();
+  goTo("#/nowhere");
+  expect(screen.getByRole("alert").textContent).toContain("Access denied");
+});
+
+test("labels every screen as demo-mode local data", () => {
+  renderShell();
+  expect(screen.getByText("Demo · local data")).toBeTruthy();
+});

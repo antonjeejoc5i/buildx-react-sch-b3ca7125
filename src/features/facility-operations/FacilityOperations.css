@@ -1,13 +1,11 @@
 .facility-operations {
   display: grid;
   gap: var(--primitives-spacing-5);
-  margin: 0 auto;
-  max-width: var(--primitives-spacing-64);
 }
 
-.facility-operations header h1,
+.facility-operations header h2,
 .facility-operations header p,
-.facility-operations h2 {
+.facility-operations h3 {
   margin: 0;
 }
 
@@ -49,7 +47,7 @@
   border: 1px solid var(--component-input-border-default);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-input-text-value);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-2);
@@ -65,7 +63,7 @@
 
 .facility-operations__list li {
   align-items: start;
-  background-color: var(--component-surface-card-bg);
+  background-color: var(--semantic-color-background-default-secondary);
   border: 1px solid var(--component-surface-card-border);
   border-radius: var(--primitives-radius-md);
   display: flex;
@@ -74,7 +72,7 @@
   padding: var(--primitives-spacing-4);
 }
 
-.facility-operations__list h2 {
+.facility-operations__list h3 {
   font-size: var(--primitives-type-font-size-title-small);
   line-height: var(--primitives-type-line-height-title-small);
 }
@@ -97,7 +95,7 @@
   border: 1px solid var(--component-button-secondary-default-border);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-button-secondary-default-text);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-2) var(--primitives-spacing-3);

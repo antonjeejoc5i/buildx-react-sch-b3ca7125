@@ -1,25 +1,26 @@
 import { useEffect, useState } from "react";
 import type { DemoUser } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
-import BulkBookingOperations from "../bulk-booking-operations/BulkBookingOperations.tsx";
 import { useDemoState } from "../demo-state/useDemoState.ts";
 import FacilityManagement from "../facility-management/FacilityManagement.tsx";
+import FacilityPlanning from "../facility-operations/FacilityPlanning.tsx";
 import ReceptionOperations from "../facility-operations/ReceptionOperations.tsx";
 import LocalDataControls from "../local-data/LocalDataControls.tsx";
-import QuotaConfiguration from "../quota-configuration/QuotaConfiguration.tsx";
-import ReportingMetrics from "../reporting-metrics/ReportingMetrics.tsx";
+import NotificationOutbox from "../notification-outbox/NotificationOutbox.tsx";
+import ParticipantPresentationPanel from "../participant-presentation/ParticipantPresentationPanel.tsx";
 import ReportsAndAppointments from "../reports-and-appointments/ReportsAndAppointments.tsx";
-import ScheduleCopyTemplates from "../schedule-copy-templates/ScheduleCopyTemplates.tsx";
-import SlotManagement from "../slot-management/SlotManagement.tsx";
-import WelcomeScreen from "../welcome/WelcomeScreen.tsx";
 import ActorProvider from "./ActorProvider.tsx";
+import DemoModeBadge from "./DemoModeBadge.tsx";
+import OverviewPage from "./OverviewPage.tsx";
 import {
   getActorLabel,
   getNavigationItems,
   getRoute,
   isRouteAuthorised,
+  navigationGroupLabels,
 } from "./routes.ts";
-import type { Route } from "./routes.ts";
+import type { NavigationGroup, Route } from "./routes.ts";
+import StudyWorkspace from "./StudyWorkspace.tsx";
 import { useCurrentActor } from "./useCurrentActor.ts";
 import "./AppShell.css";
 
@@ -49,20 +50,22 @@ function RouteContent({
   data: DemoFixtures;
   route: Route;
 }) {
-  const {
-    saveBookingParticipation,
-    saveBulkBookingOperation,
-    saveFacility,
-    saveQuota,
-    saveRoom,
-    saveStudy,
-    saveScheduleOverride,
-    saveSchedulePattern,
-    saveScheduleTemplate,
-    saveSlot,
-  } = useDemoState();
-  if (route.kind === "overview") return <WelcomeScreen />;
+  const { saveBookingParticipation, saveFacility, saveRoom } = useDemoState();
+  if (route.kind === "overview")
+    return <OverviewPage actor={actor} data={data} />;
   if (route.kind === "localData") return <LocalDataControls />;
+  if (route.kind === "outbox")
+    return (
+      <div className="app-shell__panel">
+        <NotificationOutbox />
+      </div>
+    );
+  if (route.kind === "participantPreview")
+    return (
+      <div className="app-shell__panel">
+        <ParticipantPresentationPanel />
+      </div>
+    );
   if (route.kind === "reports")
     return <ReportsAndAppointments actor={actor} data={data} />;
   if (route.kind === "facility") {
@@ -71,7 +74,7 @@ function RouteContent({
     );
     if (facility === undefined) return <DeniedRoute />;
     return (
-      <>
+      <div className="app-shell__page">
         <FacilityManagement
           demoUsers={data.demoUsers}
           facility={facility}
@@ -79,77 +82,42 @@ function RouteContent({
           saveFacility={saveFacility}
           saveRoom={saveRoom}
         />
-        <ReceptionOperations
-          authorisedFacilityIds={actor.authorisedFacilityIds}
-          bookingVisits={data.bookingVisits}
-          bookings={data.bookings}
-          participants={data.participants}
-          rooms={data.rooms}
-          saveBookingVisit={async (bookingVisit) => {
-            const booking = data.bookings.find(
-              (item) => item.id === bookingVisit.bookingId,
-            );
-            if (booking === undefined)
-              throw new Error("The appointment booking is unavailable.");
-            await saveBookingParticipation(booking, [bookingVisit]);
-          }}
-          slots={data.slots}
-          studies={data.studies}
-        />
-      </>
+        <div className="app-shell__panel">
+          <ReceptionOperations
+            authorisedFacilityIds={actor.authorisedFacilityIds}
+            bookingVisits={data.bookingVisits}
+            bookings={data.bookings}
+            participants={data.participants}
+            rooms={data.rooms}
+            saveBookingVisit={async (bookingVisit) => {
+              const booking = data.bookings.find(
+                (item) => item.id === bookingVisit.bookingId,
+              );
+              if (booking === undefined)
+                throw new Error("The appointment booking is unavailable.");
+              await saveBookingParticipation(booking, [bookingVisit]);
+            }}
+            slots={data.slots}
+            studies={data.studies}
+          />
+        </div>
+        <div className="app-shell__panel">
+          <FacilityPlanning
+            authorisedFacilityIds={actor.authorisedFacilityIds}
+            authorisedStudyIds={actor.authorisedStudyIds}
+            facilities={data.facilities}
+            rooms={data.rooms}
+            slots={data.slots}
+            studies={data.studies}
+          />
+        </div>
+      </div>
     );
   }
   if (route.kind === "study") {
     const study = data.studies.find((item) => item.id === route.studyId);
     if (study === undefined) return <DeniedRoute />;
-    return (
-      <section aria-labelledby="study-heading" className="app-shell__detail">
-        <p>Study</p>
-        <h1 id="study-heading">{study.name}</h1>
-        <span>{study.description}</span>
-        <QuotaConfiguration
-          bookings={data.bookings}
-          participants={data.participants}
-          quotas={data.quotas}
-          saveQuota={saveQuota}
-          saveStudy={saveStudy}
-          study={study}
-        />
-        <SlotManagement
-          bookingVisits={data.bookingVisits}
-          bookings={data.bookings}
-          saveSlot={saveSlot}
-          slots={data.slots}
-          study={study}
-          waitlistEntries={data.waitlistEntries}
-        />
-        <BulkBookingOperations
-          actor={actor}
-          data={data}
-          saveBulkBookingOperation={saveBulkBookingOperation}
-          study={study}
-        />
-        <ReportingMetrics
-          bookingVisits={data.bookingVisits}
-          bookings={data.bookings}
-          participants={data.participants}
-          quotas={data.quotas}
-          slots={data.slots}
-          study={study}
-        />
-        <ScheduleCopyTemplates
-          facilities={data.facilities}
-          overrides={data.scheduleOverrides}
-          patterns={data.schedulePatterns}
-          saveOverride={saveScheduleOverride}
-          savePattern={saveSchedulePattern}
-          saveTemplate={saveScheduleTemplate}
-          studies={data.studies}
-          study={study}
-          templates={data.scheduleTemplates}
-        />
-      </section>
-    );
+    return <StudyWorkspace actor={actor} data={data} study={study} />;
   }
   return <DeniedRoute />;
 }
@@ -185,13 +153,17 @@ function ScopedContent() {
   const route = getRoute(hash);
   const navigationItems = getNavigationItems(data, actor);
   const activeHref = `#${hash.replace(/^#/, "") || "/"}`;
+  const groups = Object.keys(navigationGroupLabels) as NavigationGroup[];
 
   return (
     <div className="app-shell">
       <header className="app-shell__header">
-        <a className="app-shell__brand" href="#/">
-          Study scheduling
-        </a>
+        <div className="app-shell__brand-group">
+          <a className="app-shell__brand" href="#/">
+            Study scheduling
+          </a>
+          <DemoModeBadge />
+        </div>
         <label className="app-shell__actor-label" htmlFor="demo-actor">
           Simulated local actor
           <select
@@ -215,18 +187,35 @@ function ScopedContent() {
           <p className="app-shell__actor-summary">
             Acting as <strong>{getActorLabel(actor)}</strong>
           </p>
-          <ul>
-            {navigationItems.map((item) => (
-              <li key={item.href}>
-                <a
-                  aria-current={activeHref === item.href ? "page" : undefined}
-                  href={item.href}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          {groups.map((group) => {
+            const items = navigationItems.filter(
+              (item) => item.group === group,
+            );
+            if (items.length === 0) return null;
+            return (
+              <div className="app-shell__nav-group" key={group}>
+                {group === "general" ? null : (
+                  <p className="app-shell__nav-group-label">
+                    {navigationGroupLabels[group]}
+                  </p>
+                )}
+                <ul>
+                  {items.map((item) => (
+                    <li key={item.href}>
+                      <a
+                        aria-current={
+                          activeHref === item.href ? "page" : undefined
+                        }
+                        href={item.href}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </nav>
         <main className="app-shell__content">
           {isRouteAuthorised(route, actor) ? (

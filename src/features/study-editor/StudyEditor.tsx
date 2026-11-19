@@ -67,8 +67,8 @@ export default function StudyEditor({
   return (
     <section aria-labelledby="study-editor-heading" className="study-editor">
       <header>
-        <p>Study editor</p>
-        <h1 id="study-editor-heading">{study.name}</h1>
+        <p>Create, configure and link to Decipher</p>
+        <h2 id="study-editor-heading">Study setup</h2>
       </header>
       {message !== null ? (
         <p aria-live="polite" className="study-editor__message">
@@ -76,7 +76,7 @@ export default function StudyEditor({
         </p>
       ) : null}
       <form className="study-editor__card" onSubmit={submit}>
-        <h2>Study details</h2>
+        <h3>Study details</h3>
         <label htmlFor="study-name">
           Study name
           <input
@@ -120,7 +120,7 @@ export default function StudyEditor({
             ))}
           </select>
         </label>
-        <h2>Booking location</h2>
+        <h3>Booking location</h3>
         <label htmlFor="study-facility">
           Facility
           <select
@@ -182,7 +182,7 @@ export default function StudyEditor({
             value={values.decipherProjectId}
           />
         </label>
-        <h2>Visit</h2>
+        <h3>Visit</h3>
         <label htmlFor="study-visit-name">
           Visit name
           <input
@@ -211,7 +211,7 @@ export default function StudyEditor({
             value={values.visitDurationMinutes}
           />
         </label>
-        <h2>Booking controls</h2>
+        <h3>Booking controls</h3>
         <label className="study-editor__checkbox" htmlFor="study-reschedule">
           <input
             checked={values.allowSelfServiceReschedule}
@@ -241,7 +241,7 @@ export default function StudyEditor({
             value={values.maxReschedules}
           />
         </label>
-        <h2>Notifications</h2>
+        <h3>Notifications</h3>
         <label htmlFor="study-reminder-hours">
           Send reminder hours before visit
           <input

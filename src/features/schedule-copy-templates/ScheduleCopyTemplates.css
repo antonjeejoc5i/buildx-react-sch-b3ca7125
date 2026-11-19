@@ -1,7 +1,6 @@
 .schedule-copy-templates {
   display: grid;
   gap: var(--primitives-spacing-6);
-  margin-top: var(--primitives-spacing-6);
 }
 
 .schedule-copy-templates header p,
@@ -20,7 +19,7 @@
 
 .schedule-copy-templates__card,
 .schedule-copy-templates__message {
-  background-color: var(--component-surface-card-bg);
+  background-color: var(--semantic-color-background-default-secondary);
   border: 1px solid var(--component-surface-card-border);
   border-radius: var(--primitives-radius-lg);
   display: grid;
@@ -48,7 +47,7 @@
   border: 1px solid var(--component-input-border-default);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-input-text-value);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-2);
@@ -59,7 +58,7 @@
   border: 1px solid var(--component-button-primary-default-background);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-button-primary-default-text);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
@@ -87,8 +86,33 @@
 }
 
 .schedule-copy-templates__actions {
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(var(--primitives-spacing-24), max-content)
-  );
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Layout: copy and save sit side by side; the template library takes the full width. */
+.schedule-copy-templates {
+  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.schedule-copy-templates > header,
+.schedule-copy-templates__message,
+.schedule-copy-templates > section:last-child {
+  grid-column: 1 / -1;
+}
+
+.schedule-copy-templates > section:last-child {
+  display: grid;
+  gap: var(--primitives-spacing-3);
+}
+
+.schedule-copy-templates__list {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--primitives-spacing-64) + var(--primitives-spacing-16))), 1fr));
+}
+
+@media (max-width: 1100px) {
+  .schedule-copy-templates {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

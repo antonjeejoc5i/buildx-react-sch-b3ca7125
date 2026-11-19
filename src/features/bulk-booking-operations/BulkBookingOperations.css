@@ -1,20 +1,18 @@
 .bulk-booking-operations {
-  border-top: var(--primitives-spacing-1) solid
-    var(--component-surface-card-border);
   color: var(--semantic-color-text-default-secondary);
   display: grid;
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   gap: var(--primitives-spacing-4);
   line-height: var(--primitives-type-line-height-body-medium);
-  margin-top: var(--primitives-spacing-6);
-  padding-top: var(--primitives-spacing-6);
 }
 
 .bulk-booking-operations h2,
 .bulk-booking-operations h3 {
   color: var(--semantic-color-text-default-primary);
-  font-family: var(--primitives-type-font-family-primary);
+  font-family:
+    var(--primitives-type-font-family-primary),
+    var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   margin: 0;
 }
 
@@ -40,7 +38,7 @@
 }
 
 .bulk-booking-operations__bookings {
-  border: var(--primitives-spacing-1) solid
+  border: 1px solid
     var(--component-input-border-default);
   border-radius: var(--primitives-radius-md);
   padding: var(--primitives-spacing-3);
@@ -63,7 +61,7 @@
 .bulk-booking-operations select,
 .bulk-booking-operations button {
   background: var(--component-button-secondary-default-background);
-  border: var(--primitives-spacing-1) solid
+  border: 1px solid
     var(--component-button-secondary-default-border);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-button-secondary-default-text);
@@ -80,4 +78,11 @@
 
 .bulk-booking-operations__confirmation {
   color: var(--semantic-color-text-default-primary);
+}
+
+/* Controls keep their natural width instead of stretching across the panel. */
+.bulk-booking-operations__field select,
+.bulk-booking-operations > button {
+  justify-self: start;
+  min-width: var(--primitives-spacing-64);
 }

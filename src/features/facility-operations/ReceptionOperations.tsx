@@ -76,7 +76,7 @@ export default function ReceptionOperations({
     >
       <header>
         <p className="facility-operations__eyebrow">Day-of operations</p>
-        <h1 id="reception-heading">Reception appointments</h1>
+        <h2 id="reception-heading">Reception appointments</h2>
         <p className="facility-operations__description">
           This view shows only the participant name needed for arrival and
           attendance handling.
@@ -96,7 +96,7 @@ export default function ReceptionOperations({
           {appointments.map((appointment) => (
             <li key={appointment.bookingVisit.id}>
               <div>
-                <h2>{appointment.participantName}</h2>
+                <h3>{appointment.participantName}</h3>
                 <p>{formatDateTime(appointment.startsAtUtc)}</p>
                 <p>
                   {appointment.studyName} · {appointment.roomName}

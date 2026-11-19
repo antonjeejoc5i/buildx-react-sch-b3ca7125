@@ -38,3 +38,34 @@ test("provides a named, focusable available-slot control and announces confirmat
     "Booking confirmed",
   );
 });
+
+test("shows the SCH-024 confirmation with location and the booked visit", async () => {
+  const participant = demoFixtures.participants.find(
+    (item) => item.id === "participant-quinn-patel",
+  );
+  const slot = demoFixtures.slots[0];
+  const study = demoFixtures.studies[0];
+  if (participant === undefined || slot === undefined || study === undefined)
+    throw new Error("Missing fixture records.");
+
+  render(
+    <BookingFlow
+      data={{
+        ...demoFixtures,
+        bookings: [],
+        bookingVisits: [],
+        slots: [{ ...slot, capacity: 2 }],
+      }}
+      participant={participant}
+      study={study}
+    />,
+  );
+  fireEvent.click(
+    screen.getAllByRole("button", { name: /select available slot/i })[0],
+  );
+  fireEvent.click(screen.getAllByRole("button", { name: "Confirm booking" })[0]);
+
+  const status = await screen.findByRole("status");
+  expect(status.textContent).toContain("Harbor Research Center, Interview Room 101");
+  expect(status.textContent).toContain("Research interview");
+});

@@ -1,9 +1,6 @@
 .participant-presentation {
   display: grid;
   gap: var(--primitives-spacing-4);
-  margin: var(--primitives-spacing-6) auto 0;
-  max-width: var(--primitives-spacing-64);
-  width: calc(100% - var(--primitives-spacing-12));
 }
 
 .participant-presentation header p,
@@ -43,7 +40,7 @@
   border: 1px solid var(--component-dropdown-border-default);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-dropdown-option-text-default);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   max-width: 100%;
@@ -75,11 +72,6 @@
 }
 
 @media (max-width: 700px) {
-  .participant-presentation {
-    margin-top: var(--primitives-spacing-4);
-    width: calc(100% - var(--primitives-spacing-6));
-  }
-
   .participant-presentation__controls,
   .participant-presentation__preview {
     padding: var(--primitives-spacing-4);
@@ -87,5 +79,21 @@
 
   .participant-presentation select {
     width: 100%;
+  }
+}
+
+/* Layout: display controls beside the rendered preview. */
+.participant-presentation {
+  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.participant-presentation > header {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1100px) {
+  .participant-presentation {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

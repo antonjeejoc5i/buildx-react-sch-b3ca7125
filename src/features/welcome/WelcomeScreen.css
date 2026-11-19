@@ -1,25 +1,16 @@
-.welcome-screen {
-  box-sizing: border-box;
-  display: grid;
-  min-height: 100vh;
-  padding: var(--primitives-spacing-6);
-  place-items: center;
-}
-
 .welcome-screen__card {
-  box-sizing: border-box;
-  max-width: var(--primitives-spacing-64);
-  padding: var(--primitives-spacing-10);
-  background-color: var(--component-surface-card-bg);
-  border: 1px solid var(--component-surface-card-border);
+  background-color: var(--semantic-color-background-brand-subtle);
+  border: 1px solid var(--semantic-color-border-brand-subtle);
   border-radius: var(--primitives-radius-lg);
+  box-sizing: border-box;
+  padding: var(--primitives-spacing-7);
 }
 
 .welcome-screen__eyebrow {
-  margin: 0 0 var(--primitives-spacing-2);
   color: var(--semantic-color-text-brand-primary);
   font-size: var(--primitives-type-font-size-body-small);
   line-height: var(--primitives-type-line-height-body-small);
+  margin: 0 0 var(--primitives-spacing-2);
 }
 
 .welcome-screen h1 {
@@ -27,8 +18,8 @@
 }
 
 .welcome-screen__description {
-  margin: var(--primitives-spacing-4) 0 0;
   color: var(--semantic-color-text-default-secondary);
   font-size: var(--primitives-type-font-size-body-large);
   line-height: var(--primitives-type-line-height-body-large);
+  margin: var(--primitives-spacing-3) 0 0;
 }

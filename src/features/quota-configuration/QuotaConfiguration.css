@@ -1,7 +1,6 @@
 .quota-configuration {
   display: grid;
   gap: var(--primitives-spacing-5);
-  margin-top: var(--primitives-spacing-7);
 }
 
 .quota-configuration header p,
@@ -19,7 +18,7 @@
 
 .quota-configuration__default,
 .quota-configuration__bucket {
-  background-color: var(--component-surface-card-bg);
+  background-color: var(--semantic-color-background-default-secondary);
   border: 1px solid var(--component-surface-card-border);
   border-radius: var(--primitives-radius-lg);
   display: grid;
@@ -45,7 +44,7 @@
   border: 1px solid var(--component-input-border-default);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-input-text-value);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-2);
@@ -56,7 +55,7 @@
   border: 1px solid var(--component-button-primary-default-background);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-button-primary-default-text);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
@@ -94,4 +93,15 @@
   border-radius: var(--primitives-radius-md);
   margin: 0;
   padding: var(--primitives-spacing-3);
+}
+
+/* Layout */
+.quota-configuration__default {
+  align-items: end;
+  grid-template-columns: minmax(0, var(--primitives-spacing-64)) max-content;
+  justify-content: start;
+}
+
+.quota-configuration__buckets {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--primitives-spacing-64) + var(--primitives-spacing-16))), 1fr));
 }

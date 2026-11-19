@@ -62,7 +62,7 @@ export default function FacilityPlanning({
     <section aria-labelledby="planning-heading" className="facility-operations">
       <header>
         <p className="facility-operations__eyebrow">Facility operations</p>
-        <h1 id="planning-heading">Upcoming study planning</h1>
+        <h2 id="planning-heading">Upcoming study planning</h2>
         <p className="facility-operations__description">
           Results include only facilities, studies, and rooms in your simulated
           local scope.

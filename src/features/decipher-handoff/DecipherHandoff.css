@@ -6,8 +6,8 @@
   display: grid;
   gap: var(--primitives-spacing-4);
   margin: var(--primitives-spacing-6) auto;
-  max-width: var(--primitives-spacing-64);
-  padding: var(--primitives-spacing-6);
+  max-width: calc(var(--primitives-spacing-64) * 2.5);
+  padding: var(--primitives-spacing-7);
   width: calc(100% - var(--primitives-spacing-12));
 }
 
@@ -69,7 +69,7 @@
   border: 1px solid var(--component-button-primary-default-background);
   border-radius: var(--primitives-radius-sm);
   color: var(--component-button-primary-default-text);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-2) var(--primitives-spacing-3);

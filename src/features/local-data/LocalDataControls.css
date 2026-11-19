@@ -1,10 +1,9 @@
 .local-data {
   box-sizing: border-box;
   display: grid;
+  align-items: start;
   gap: var(--primitives-spacing-6);
-  margin: 0 auto;
-  max-width: var(--primitives-spacing-64);
-  padding: 0 var(--primitives-spacing-6) var(--primitives-spacing-12);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--primitives-spacing-64) + var(--primitives-spacing-16))), 1fr));
 }
 .local-data__card,
 .local-data__notice,
@@ -43,7 +42,7 @@
   border: 1px solid var(--component-button-secondary-default-border);
   border-radius: var(--primitives-radius-md);
   color: var(--component-button-secondary-default-text);
-  font-family: var(--primitives-type-font-family-secondary);
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
   font-size: var(--primitives-type-font-size-body-medium);
   line-height: var(--primitives-type-line-height-body-medium);
   padding: var(--primitives-spacing-2) var(--primitives-spacing-4);

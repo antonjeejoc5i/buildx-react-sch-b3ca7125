@@ -1,10 +1,7 @@
 .notification-outbox {
-  border: 1px solid var(--component-surface-card-border);
-  border-radius: var(--primitives-radius-md);
   display: grid;
   gap: var(--primitives-spacing-4);
-  margin: var(--primitives-spacing-6);
-  padding: var(--primitives-spacing-5);
+  margin: 0;
 }
 
 .notification-outbox__heading,
@@ -40,6 +37,7 @@
 }
 
 .notification-outbox li {
+  background-color: var(--semantic-color-background-default-secondary);
   border: 1px solid var(--component-table-row-border);
   border-radius: var(--primitives-radius-sm);
   padding: var(--primitives-spacing-4);
