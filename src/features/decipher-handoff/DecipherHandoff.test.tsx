@@ -3,6 +3,8 @@ import { expect, test, vi } from "vitest";
 import { demoFixtures } from "../../fixtures/demoFixtures.ts";
 import DecipherHandoff from "./DecipherHandoff.tsx";
 
+const saveParticipation = async () => undefined;
+
 test("shows an eligible participant a localized summary before slot selection without a network call", () => {
   const fetchSpy = vi.fn();
   vi.stubGlobal("fetch", fetchSpy);
@@ -12,6 +14,7 @@ test("shows an eligible participant a localized summary before slot selection wi
       data={demoFixtures}
       participantId="participant-quinn-patel"
       projectId="DCP-DEMO-2048"
+      saveParticipation={saveParticipation}
     />,
   );
 
@@ -33,6 +36,7 @@ test("shows a local denial for unqualified and incomplete participants", () => {
       data={demoFixtures}
       participantId="participant-morgan-reed"
       projectId="DCP-DEMO-2048"
+      saveParticipation={saveParticipation}
     />,
   );
   expect(screen.getByRole("alert").textContent).toContain("cannot book");
@@ -42,6 +46,7 @@ test("shows a local denial for unqualified and incomplete participants", () => {
       data={demoFixtures}
       participantId="participant-riley-stone"
       projectId="DCP-DEMO-2048"
+      saveParticipation={saveParticipation}
     />,
   );
   expect(screen.getByRole("alert").textContent).toContain(
@@ -55,6 +60,7 @@ test("shows a local denial for a closed study", () => {
       data={demoFixtures}
       participantId="participant-jordan-lee"
       projectId="DCP-DEMO-CLOSED-2049"
+      saveParticipation={saveParticipation}
     />,
   );
   expect(screen.getByRole("alert").textContent).toContain("study is closed");
@@ -66,6 +72,7 @@ test("opens an active appointment instead of a duplicate booking flow", () => {
       data={demoFixtures}
       participantId="participant-avery-chen"
       projectId="DCP-DEMO-2048"
+      saveParticipation={saveParticipation}
     />,
   );
   expect(

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PropsWithChildren } from "react";
 import type {
+  Booking,
+  BookingVisit,
   Facility,
   Quota,
   Room,
@@ -160,6 +162,19 @@ export default function DemoStateProvider({
       }),
     [activeRepositories, updateData],
   );
+  const saveBookingParticipation = useCallback(
+    async (booking: Booking, bookingVisits: BookingVisit[]) =>
+      updateData(async () => {
+        await activeRepositories.bookings.put(booking);
+        await Promise.all(
+          bookingVisits.map((bookingVisit) =>
+            activeRepositories.bookingVisits.put(bookingVisit),
+          ),
+        );
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
   const exportData = useCallback(() => exportLocalData(data), [data]);
 
   useEffect(() => {
@@ -184,6 +199,7 @@ export default function DemoStateProvider({
       saveScheduleTemplate,
       saveSlot,
       saveWaitlistEntry,
+      saveBookingParticipation,
       exportData,
     }),
     [
@@ -195,6 +211,7 @@ export default function DemoStateProvider({
       isLoading,
       reload,
       resetToSeed,
+      saveBookingParticipation,
       saveFacility,
       saveQuota,
       saveRoom,

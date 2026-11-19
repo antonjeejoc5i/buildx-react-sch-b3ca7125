@@ -1,5 +1,7 @@
 import { createContext } from "react";
 import type {
+  Booking,
+  BookingVisit,
   Facility,
   Quota,
   Room,
@@ -29,6 +31,10 @@ export interface DemoState {
   saveScheduleTemplate: (template: ScheduleTemplate) => Promise<void>;
   saveSlot: (slot: Slot) => Promise<void>;
   saveWaitlistEntry?: (entry: WaitlistEntry) => Promise<void>;
+  saveBookingParticipation: (
+    booking: Booking,
+    bookingVisits: BookingVisit[],
+  ) => Promise<void>;
   exportData: () => string;
 }
 

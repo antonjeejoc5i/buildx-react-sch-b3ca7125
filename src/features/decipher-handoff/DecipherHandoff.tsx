@@ -1,6 +1,8 @@
 import { useState } from "react";
 import type { WaitlistEntry } from "../../domain/models.ts";
+import type { Booking, BookingVisit } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
+import AppointmentManagement from "../appointment-management/AppointmentManagement.tsx";
 import BookingFlow from "../booking-flow/BookingFlow.tsx";
 import WaitlistEnrollment from "../waitlist/WaitlistEnrollment.tsx";
 import {
@@ -15,6 +17,10 @@ interface DecipherHandoffProps {
   participantId: string;
   projectId: string;
   saveWaitlistEntry?: (entry: WaitlistEntry) => Promise<void>;
+  saveParticipation: (
+    booking: Booking,
+    bookingVisits: BookingVisit[],
+  ) => Promise<void>;
 }
 
 export default function DecipherHandoff({
@@ -22,6 +28,7 @@ export default function DecipherHandoff({
   participantId,
   projectId,
   saveWaitlistEntry,
+  saveParticipation,
 }: DecipherHandoffProps) {
   const [showSlots, setShowSlots] = useState(false);
   const result = resolveHandoff(
@@ -44,6 +51,7 @@ export default function DecipherHandoff({
 
   const copy = getHandoffCopy(result.participant.language);
   if (result.kind === "existing-booking") {
+    const booking = data.bookings.find((item) => item.id === result.booking.id);
     return (
       <main className="decipher-handoff" aria-labelledby="handoff-heading">
         <p className="decipher-handoff__eyebrow">{result.study.name}</p>
@@ -62,6 +70,15 @@ export default function DecipherHandoff({
               </dd>
             </div>
           </dl>
+        )}
+        {booking === undefined ? null : (
+          <AppointmentManagement
+            booking={booking}
+            data={data}
+            participant={result.participant}
+            saveParticipation={saveParticipation}
+            study={result.study}
+          />
         )}
       </main>
     );
