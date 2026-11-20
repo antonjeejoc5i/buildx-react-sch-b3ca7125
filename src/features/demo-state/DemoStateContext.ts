@@ -27,6 +27,8 @@ export interface DemoState {
   saveFacility: (facility: Facility) => Promise<void>;
   saveRoom: (room: Room) => Promise<void>;
   saveStudy: (study: Study) => Promise<void>;
+  /** Saves a new study and adds it to the creating demo user's simulated study scope. */
+  createStudy: (study: Study, actorId: string) => Promise<void>;
   saveQuota: (quota: Quota) => Promise<void>;
   saveSchedulePattern: (pattern: SchedulePattern) => Promise<void>;
   saveScheduleOverride: (override: ScheduleOverride) => Promise<void>;

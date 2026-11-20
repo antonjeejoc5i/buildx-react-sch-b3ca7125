@@ -117,7 +117,15 @@ function RouteContent({
   if (route.kind === "study") {
     const study = data.studies.find((item) => item.id === route.studyId);
     if (study === undefined) return <DeniedRoute />;
-    return <StudyWorkspace actor={actor} data={data} study={study} />;
+    // Keyed by study so each study's editors start from that study's saved values.
+    return (
+      <StudyWorkspace
+        actor={actor}
+        data={data}
+        key={study.id}
+        study={study}
+      />
+    );
   }
   return <DeniedRoute />;
 }

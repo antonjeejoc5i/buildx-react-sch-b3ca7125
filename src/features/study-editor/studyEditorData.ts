@@ -136,6 +136,24 @@ export function buildStudy(
   };
 }
 
+/** A readable study ID from its name, made unique against the studies that already exist. */
+export function createStudyId(name: string, existingIds: string[]): string {
+  const slug =
+    name
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 48)
+      .replace(/-+$/, "") || "untitled";
+  const base = `study-${slug}`;
+  const taken = new Set(existingIds);
+  if (!taken.has(base)) return base;
+  let suffix = 2;
+  while (taken.has(`${base}-${suffix}`)) suffix += 1;
+  return `${base}-${suffix}`;
+}
+
 export function createDraftStudy(id: string): Study {
   return {
     id,

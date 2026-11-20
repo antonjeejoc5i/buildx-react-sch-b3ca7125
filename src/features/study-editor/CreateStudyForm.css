@@ -1,0 +1,58 @@
+.create-study-form {
+  border-top: 1px solid var(--component-surface-card-border);
+  display: grid;
+  gap: var(--primitives-spacing-2);
+  padding-top: var(--primitives-spacing-4);
+}
+.create-study-form label {
+  color: var(--component-input-label);
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+}
+.create-study-form__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--primitives-spacing-2);
+}
+.create-study-form input {
+  background-color: var(--component-input-background-default);
+  border: 1px solid var(--component-input-border-default);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-input-text-value);
+  flex: 1 1 12rem;
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  min-width: 0;
+  padding: var(--primitives-spacing-2);
+}
+.create-study-form input[aria-invalid="true"] {
+  border-color: var(--component-input-border-error);
+}
+.create-study-form button {
+  background-color: var(--component-button-primary-default-background);
+  border: 1px solid var(--component-button-primary-default-background);
+  border-radius: var(--primitives-radius-sm);
+  color: var(--component-button-primary-default-text);
+  cursor: pointer;
+  font-family: var(--primitives-type-font-family-secondary), system-ui, sans-serif;
+  font-size: var(--primitives-type-font-size-body-medium);
+  line-height: var(--primitives-type-line-height-body-medium);
+  padding: var(--primitives-spacing-2) var(--primitives-spacing-3);
+}
+.create-study-form button:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+.create-study-form__hint,
+.create-study-form__error {
+  font-size: var(--primitives-type-font-size-body-small);
+  line-height: var(--primitives-type-line-height-body-small);
+  margin: 0;
+}
+.create-study-form__hint {
+  color: var(--semantic-color-text-default-secondary);
+}
+.create-study-form__error {
+  color: var(--component-input-text-help-error);
+}

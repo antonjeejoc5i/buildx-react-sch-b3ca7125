@@ -116,6 +116,27 @@ export default function DemoStateProvider({
       }),
     [activeRepositories, updateData],
   );
+  const createStudy = useCallback(
+    async (study: Study, actorId: string) =>
+      updateData(async () => {
+        if ((await activeRepositories.studies.get(study.id)) !== undefined) {
+          throw new Error("A study with this ID already exists.");
+        }
+        const actor = await activeRepositories.demoUsers.get(actorId);
+        if (actor === undefined) {
+          throw new Error("The selected demo actor is unavailable.");
+        }
+        await activeRepositories.studies.put(study);
+        if (!actor.authorisedStudyIds.includes(study.id)) {
+          await activeRepositories.demoUsers.put({
+            ...actor,
+            authorisedStudyIds: [...actor.authorisedStudyIds, study.id],
+          });
+        }
+        return loadLocalData(activeRepositories);
+      }),
+    [activeRepositories, updateData],
+  );
   const saveQuota = useCallback(
     async (quota: Quota) =>
       updateData(async () => {
@@ -221,6 +242,7 @@ export default function DemoStateProvider({
       saveFacility,
       saveRoom,
       saveStudy,
+      createStudy,
       saveQuota,
       saveSchedulePattern,
       saveScheduleOverride,
@@ -233,6 +255,7 @@ export default function DemoStateProvider({
     }),
     [
       clearData,
+      createStudy,
       data,
       error,
       exportData,

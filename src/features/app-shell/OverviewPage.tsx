@@ -1,5 +1,7 @@
 import type { DemoUser } from "../../domain/models.ts";
 import type { DemoFixtures } from "../../fixtures/demoFixtures.ts";
+import { useDemoState } from "../demo-state/useDemoState.ts";
+import CreateStudyForm from "../study-editor/CreateStudyForm.tsx";
 import WelcomeScreen from "../welcome/WelcomeScreen.tsx";
 
 interface OverviewPageProps {
@@ -8,6 +10,7 @@ interface OverviewPageProps {
 }
 
 export default function OverviewPage({ actor, data }: OverviewPageProps) {
+  const { createStudy } = useDemoState();
   const studies = data.studies.filter((study) =>
     actor.authorisedStudyIds.includes(study.id),
   );
@@ -50,6 +53,11 @@ export default function OverviewPage({ actor, data }: OverviewPageProps) {
               ))}
             </ul>
           )}
+          <CreateStudyForm
+            actor={actor}
+            createStudy={createStudy}
+            studies={data.studies}
+          />
         </section>
         <section
           aria-labelledby="overview-facilities-heading"
